@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine
 from dotenv import load_dotenv
 import os
-
+from models.models import Base
 
 load_dotenv()
 
@@ -17,8 +17,11 @@ def connect_to_database(url: str):
     try:
         connection = engine.connect()
         print(f'connected: {connection}')
+        Base.metadata.create_all(bind=connection)
+        return connection
     except Exception as e:
+        print(e)
         return e
 
 
-db_connection = connect_to_database(db_url)
+test = connect_to_database(db_url)
