@@ -1,20 +1,7 @@
 from sqlalchemy import create_engine
 from dotenv import load_dotenv
 import os
-
-from sqlalchemy.orm import declarative_base, relationship
-from sqlalchemy import Column, Integer, String, ForeignKey, UUID, DateTime, Enum, ARRAY, Float, Boolean
-import enum
-
-
-Base = declarative_base()
-
-
-class Collaborator(Base):
-    __tablename__ = 'collaborators'
-
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(Integer, index=True)
+from models import base, collaborator, customer, deal, event
 
 
 load_dotenv()
@@ -24,14 +11,26 @@ db_user = os.getenv("DB_USER")
 db_password = os.getenv("DB_PASSWORD")
 db_name = os.getenv("DB_NAME")
 db_url = f"postgresql+psycopg2://{db_user}:{db_password}@localhost:{db_port}/{db_name}"
-print(f'db url: {db_url}')
 
-try:
-    engine = create_engine(db_url)
-    connection = engine.connect()
-    print(f'connected: port {db_port}')
-    Base.metadata.create_all(bind=engine)
-    print("tables created")
-except Exception as e:
-    print(e)
+
+def connect_to_db(url):
+    try:
+        engine = create_engine(url)
+    except Exception as e:
+        return e
+    return engine
+
+
+def create_tables(engine, declarative_base):
+    try:
+        declarative_base.metadata.create_all(engine)
+    except Exception as e:
+        return e
+
+
+engine = connect_to_db(db_url)
+print(f'connected: port {db_port}')
+create_tables(engine, base.Base)
+print("tables created")
+
 
