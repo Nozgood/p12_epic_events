@@ -4,7 +4,7 @@ from models.base import Base
 
 
 class Customer(Base):
-    __tablename__ = 'clients'
+    __tablename__ = 'customers'
     id = Column(UUID, primary_key=True, index=True)
     name = Column(String(50), unique=True, index=True)
     email = Column(String(50), unique=True, index=True)
@@ -14,6 +14,6 @@ class Customer(Base):
     updated_at = Column(DateTime, unique=False, index=True)
     contact_id = Column(UUID, ForeignKey("collaborators.id"))
 
-    contact = relationship("Collaborator", back_populates="clients")
-    deals = relationship("Deal", back_populates="client")
-    events = relationship("Event", back_populates="client")
+    contact = relationship("Collaborator", back_populates="customers")
+    deals = relationship("Deal", back_populates="customer")
+    events = relationship("Event", back_populates="customer")

@@ -8,7 +8,7 @@ class Event(Base):
     id = Column(UUID, primary_key=True, index=True)
     name = Column(String(50), unique=True, index=True)
     deal_id = Column(UUID, ForeignKey("deals.id"))
-    client_id = Column(UUID, ForeignKey("clients.id"))
+    customer_id = Column(UUID, ForeignKey("customers.id"))
     contact_id = Column(UUID, ForeignKey("collaborators.id"))  # it must be a support role
     start_date = Column(DateTime, unique=False, index=True)
     end_date = Column(DateTime, unique=False, index=True)
@@ -17,5 +17,5 @@ class Event(Base):
     notes = Column(String(200), unique=False, index=False)
 
     contact = relationship("Collaborator", back_populates="events")
-    client = relationship("Client", back_populates="events")
+    customer = relationship("Customer", back_populates="events")
     deal = relationship("Deal", back_populates="events")
