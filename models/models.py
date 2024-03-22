@@ -28,7 +28,7 @@ class Collaborator(Base):
     role = Column(Enum(CollaboratorRole), unique=False, index=True)
     email = Column(String(50), unique=True, index=True)
     password = Column(String(20), unique=True, index=True)
-    permissions = Column(Enum(CollaboratorPermission), unique=False, index=True)
+    permissions = Column(ARRAY(Enum(CollaboratorPermission)), unique=False, index=True)
 
     clients = relationship("Client", back_populates="contact")  # back_populates = relation inverse
     deals = relationship("Deal", back_populates="contact")
@@ -45,7 +45,7 @@ class Client(Base):
     corporation = Column(String(20), unique=False, index=True)
     created_at = Column(DateTime, unique=False, index=True)
     updated_at = Column(DateTime, unique=False, index=True)
-    contact_id = Column(Integer, ForeignKey("collaborators.id"))  # it must be a commercial role
+    contact_id = Column(UUID, ForeignKey("collaborators.id"))  # it must be a commercial role
 
     contact = relationship("Collaborator", back_populates="clients")
     deals = relationship("Deal", back_populates="client")
@@ -56,8 +56,8 @@ class Deal(Base):
     __tablename__ = 'deals'
 
     id = Column(UUID, primary_key=True, index=True)
-    client_id = Column(Integer, ForeignKey("clients.id"))
-    contact_id = Column(Integer, ForeignKey("collaborators.id"))
+    client_id = Column(UUID, ForeignKey("clients.id"))
+    contact_id = Column(UUID, ForeignKey("collaborators.id"))
     bill = Column(Float, unique=False)
     remaining_on_bill = Column(Float, unique=False)
     created_at = Column(DateTime, unique=False, index=True)
@@ -73,9 +73,9 @@ class Event(Base):
 
     id = Column(UUID, primary_key=True, index=True)
     name = Column(String(50), unique=True, index=True)
-    deal_id = Column(Integer, ForeignKey("deals.id"))
-    client_id = Column(Integer, ForeignKey("clients.id"))
-    contact_id = Column(Integer, ForeignKey("collaborators.id"))  # => it must be a support role
+    deal_id = Column(UUID, ForeignKey("deals.id"))
+    client_id = Column(UUID, ForeignKey("clients.id"))
+    contact_id = Column(UUID, ForeignKey("collaborators.id"))  # => it must be a support role
     start_date = Column(DateTime, unique=False, index=True)
     end_date = Column(DateTime, unique=False, index=True)
     location = Column(String(50), unique=False, index=True)
