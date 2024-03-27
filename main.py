@@ -1,11 +1,10 @@
 from sqlalchemy import create_engine
 from dotenv import load_dotenv
 import os
-
 from sqlalchemy.orm import sessionmaker
 
-from models import base, collaborator, customer, deal, event
-
+from controllers.controller import Controller
+from views.view import View
 
 load_dotenv()
 
@@ -42,19 +41,32 @@ def drop_tables(engine, declarative_base):
 
 
 new_engine = connect_to_db(db_url)
+
 if new_engine is None:
     print('could not connect to the db')
     exit()
-# create_tables(new_engine, base.Base)
-# drop_tables(new_engine, base.Base)
 
 Session = sessionmaker(bind=new_engine)
 session = Session()
 
-collaborator_test = collaborator.Collaborator(
-    name="Nowfeel Safi",
-    role=collaborator.CollaboratorRole.ADMIN,
-    password="password",
 
-)
+view = View()
+controller = Controller(session=session, view=view)
+controller.run()
 
+
+
+
+
+
+# create_tables(new_engine, base.Base)
+# drop_tables(new_engine, base.Base)
+# collaborator_test = collaborator.Collaborator(
+#     name="Nowfeel Safi",
+#     role=collaborator.CollaboratorRole.ADMIN,
+#     email="nowfeel@tests.com",
+#     password="password",
+# )
+#
+# session.add(collaborator_test)
+# session.commit()
