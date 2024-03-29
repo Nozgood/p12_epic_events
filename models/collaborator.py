@@ -22,6 +22,14 @@ class CollaboratorPermission(enum.Enum):
     ALL_PERMISSIONS = 6
 
 
+def create_hash_password(password: str) -> str:
+    password_bytes = password.encode('utf-8')
+    salt = bcrypt.gensalt()
+    hash_password = bcrypt.hashpw(password_bytes, salt)
+    hash_password_str = hash_password.decode('utf-8')
+    return hash_password_str
+
+
 def get_permissions_by_role(role: CollaboratorRole):
     permissions = CollaboratorPermission
     match role:
@@ -35,14 +43,6 @@ def get_permissions_by_role(role: CollaboratorRole):
             return [permissions.ALL_PERMISSIONS]
         case _:
             return []
-
-
-def create_hash_password(password: str) -> str:
-    password_bytes = password.encode('utf-8')
-    salt = bcrypt.gensalt()
-    hash_password = bcrypt.hashpw(password_bytes, salt)
-    hash_password_str = hash_password.decode('utf-8')
-    return hash_password_str
 
 
 def is_password_correct(input_password: str, db_password: str) -> bool:

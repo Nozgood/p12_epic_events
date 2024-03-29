@@ -1,3 +1,6 @@
+import models
+
+
 class Controller:
     def __init__(self, session, view):
         self.session = session
@@ -10,11 +13,13 @@ class Controller:
             menu_selection = self.view.input_menu_selection()
             match menu_selection:
                 case 1:
-                    self.register_employee()
+                    self.login()
                 case 2:
                     running = False
 
-    @staticmethod
-    def register_employee():
-        print("method not implemented")
+    def login(self):
+        name = self.view.input_username()
+        password = self.view.input_password()
+        collaborator = self.session.query(models.Collaborator).filter_by(name=name).first()
+        print(f'collaborator: {collaborator}')
         return

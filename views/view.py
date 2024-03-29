@@ -17,3 +17,11 @@ class View:
         except ValueError:
             print("please enter a digit value")
         return menu_selection
+
+    @staticmethod
+    def input_username():
+        return input("Username: ")
+
+    @staticmethod
+    def input_password():
+        return input("password: ")

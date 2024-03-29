@@ -48,25 +48,6 @@ if new_engine is None:
 
 Session = sessionmaker(bind=new_engine)
 session = Session()
-
-
 view = View()
 controller = Controller(session=session, view=view)
 controller.run()
-
-
-
-
-
-
-# create_tables(new_engine, base.Base)
-# drop_tables(new_engine, base.Base)
-# collaborator_test = collaborator.Collaborator(
-#     name="Nowfeel Safi",
-#     role=collaborator.CollaboratorRole.ADMIN,
-#     email="nowfeel@tests.com",
-#     password="password",
-# )
-#
-# session.add(collaborator_test)
-# session.commit()
