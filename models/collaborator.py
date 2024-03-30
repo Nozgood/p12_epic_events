@@ -1,9 +1,18 @@
 import uuid
 import bcrypt
 from sqlalchemy.orm import relationship
-from sqlalchemy import Column,  String,  UUID,  Enum, ARRAY
+from sqlalchemy import Column,  String,  UUID,  Enum
 import enum
 from models.base import Base
+
+
+class CollaboratorPermission:
+    EDIT_COLLABORATOR = 1
+    EDIT_DEAL = 2
+    CREATE_EVENT = 3
+    EDIT_EVENT = 4
+    EDIT_CUSTOMER = 5
+    ALL_PERMISSIONS = 6
 
 
 class CollaboratorRole(enum.Enum):
@@ -11,15 +20,6 @@ class CollaboratorRole(enum.Enum):
     COMMERCIAL = 2
     SUPPORT = 3
     ADMIN = 4
-
-
-class CollaboratorPermission(enum.Enum):
-    EDIT_COLLABORATOR = 1
-    EDIT_DEAL = 2
-    CREATE_EVENT = 3
-    EDIT_EVENT = 4
-    EDIT_CUSTOMER = 5
-    ALL_PERMISSIONS = 6
 
 
 def create_hash_password(password: str) -> str:
@@ -45,20 +45,13 @@ def get_permissions_by_role(role: CollaboratorRole):
             return []
 
 
-def is_password_correct(input_password: str, db_password: str) -> bool:
-    input_bytes = input_password.encode('utf-8')
-    db_bytes = db_password.encode('utf-8')
-    salt = bcrypt.gensalt()
-    input_hashed = bcrypt.hashpw(input_bytes, salt)
-    return bcrypt.checkpw(db_bytes, input_hashed)
-
-
 class Collaborator(Base):
 
     __tablename__ = 'collaborators'
 
     id = Column(UUID, primary_key=True, index=True)
-    name = Column(String(60), unique=True, index=True)
+    first_name = Column(String(60), unique=False, index=True)
+    last_name = Column(String(60), unique=False, index=True)
     role = Column(Enum(CollaboratorRole), unique=False, index=True)
     email = Column(String(60), unique=True, index=True)
     password = Column(String(60), unique=True, index=True)
@@ -67,14 +60,15 @@ class Collaborator(Base):
     deals = relationship("Deal", back_populates="contact")
     events = relationship("Event", back_populates="contact")
 
-    def __init__(self, name, role, email, password):
+    def __init__(self, first_name, last_name, role, email, password):
         hashed_password = create_hash_password(password)
 
         self.id = uuid.uuid4()
-        self.name = name
+        self.first_name = first_name
+        self.last_name = last_name
         self.role = role
         self.email = email
         self.password = hashed_password
 
     def __repr__(self):
-        return f"Name: {self.name}" f" Role: {self.role} " f"Email: {self.email}"
+        return f"Email: {self.email}" f" Role: {self.role} "  f"Name: {self.first_name} {self.last_name} "

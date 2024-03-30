@@ -1,9 +1,11 @@
+import models
 from sqlalchemy import create_engine
 from dotenv import load_dotenv
 import os
 from sqlalchemy.orm import sessionmaker
 
-from controllers.controller import Controller
+import models.collaborator
+from controllers.main_controller import MainController
 from views.view import View
 
 load_dotenv()
@@ -41,13 +43,27 @@ def drop_tables(engine, declarative_base):
 
 
 new_engine = connect_to_db(db_url)
-
 if new_engine is None:
     print('could not connect to the db')
     exit()
 
 Session = sessionmaker(bind=new_engine)
+
 session = Session()
+
+#
+# admin_user = models.Collaborator(
+#     email="nowfeel@epic.io",
+#     password="test",
+#     role=models.CollaboratorRole.ADMIN,
+#     first_name="Nowfeel",
+#     last_name="Safi"
+# )
+#
+# session.add(admin_user)
+# session.commit()
+# exit()
+
 view = View()
-controller = Controller(session=session, view=view)
-controller.run()
+main_controller = MainController(session=session, view=view)
+main_controller.run()
