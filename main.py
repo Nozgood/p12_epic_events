@@ -5,6 +5,7 @@ import os
 from sqlalchemy.orm import sessionmaker
 
 import models.collaborator
+from controllers.collaborator_controller import CollaboratorController
 from controllers.main_controller import MainController
 from views.view import View
 
@@ -48,7 +49,6 @@ if new_engine is None:
     exit()
 
 Session = sessionmaker(bind=new_engine)
-
 session = Session()
 
 #
@@ -65,5 +65,9 @@ session = Session()
 # exit()
 
 view = View()
-main_controller = MainController(session=session, view=view)
+collaborator_controller = CollaboratorController(
+    session=session,
+    view=view,
+)
+main_controller = MainController(session=session, view=view, collaborator_controller=collaborator_controller)
 main_controller.run()

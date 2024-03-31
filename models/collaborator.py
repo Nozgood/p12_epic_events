@@ -30,21 +30,6 @@ def create_hash_password(password: str) -> str:
     return hash_password_str
 
 
-def get_permissions_by_role(role: CollaboratorRole):
-    permissions = CollaboratorPermission
-    match role:
-        case CollaboratorRole.MANAGEMENT:
-            return [permissions.EDIT_COLLABORATOR, permissions.EDIT_DEAL, permissions.EDIT_EVENT]
-        case CollaboratorRole.COMMERCIAL:
-            return [permissions.EDIT_CUSTOMER, permissions.EDIT_DEAL, permissions.CREATE_EVENT]
-        case CollaboratorRole.SUPPORT:
-            return [permissions.EDIT_EVENT]
-        case CollaboratorRole.ADMIN:
-            return [permissions.ALL_PERMISSIONS]
-        case _:
-            return []
-
-
 class Collaborator(Base):
 
     __tablename__ = 'collaborators'
