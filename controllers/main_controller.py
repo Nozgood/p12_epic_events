@@ -47,9 +47,23 @@ class MainController:
                     self.process_admin_action(menu_selection)
 
     def process_management_action(self, menu_selection):
-        if menu_selection > 7:
-            self.view.display_error(ERR_MENU_INPUT)
-            return
+        match menu_selection:
+            case 0:
+                return
+            case 1:
+                pass
+            case 2:
+                pass
+            case 3:
+                pass
+            case 4:
+                pass
+            case 5:
+                self.collaborator_controller.manage_collaborators()
+            case 6:
+                pass
+            case _:
+                self.view.display_error(ERR_MENU_INPUT)
 
     def process_commercial_action(self, menu_selection):
         if menu_selection > 8:
@@ -72,6 +86,6 @@ class MainController:
             case 3:
                 pass
             case 4:
-                self.collaborator_controller.new_collaborator()
+                self.collaborator_controller.create_collaborator()
             case _:
                 self.view.display_error(ERR_MENU_INPUT)

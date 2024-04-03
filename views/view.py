@@ -62,10 +62,9 @@ class View:
 
     @staticmethod
     def display_management_menu():
-        print("(4) Manage Collaborators")
-        print("(5) Manage Deals")
-        print("(6) Filter and display Events")
-        print("(7) Edit an Event")
+        print("(4) Manage Events")
+        print("(5) Manage Collaborators")
+        print("(6) Manage Deals")
 
     @staticmethod
     def display_commercial_menu():
@@ -128,3 +127,20 @@ class View:
     @staticmethod
     def display_new_collaborator_validation():
         print("New collaborator correctly created")
+
+
+    @staticmethod
+    def input_collaborator_management():
+        print("(1) Create a new Collaborator")
+        print("(2) Update a Collaborator")
+        print("(3) Delete a Collaborator")
+        print("(4) Display Collaborator information")
+        selection = 0
+        while selection <= 0 or selection > 4:
+            try:
+                selection = int(input("Select an action: "))
+                if selection > 4:
+                    raise ValueError
+            except ValueError:
+                print(utils.ERR_MENU_INPUT)
+        return selection

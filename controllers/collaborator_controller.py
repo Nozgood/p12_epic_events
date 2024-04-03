@@ -10,14 +10,14 @@ class CollaboratorController:
         self.collaborator = collaborator
 
     def login(self):
-        #email = self.view.input_email()
-        #password = self.view.input_password()
+        email = self.view.input_email()
+        password = self.view.input_password()
         collaborator = (self.session.query(models.Collaborator).
-                        filter_by(email="nowfeel@epic.io").first()
+                        filter_by(email=email).first()
                         )
         if collaborator is None:
             raise ValueError(utils.ERR_COLLABORATOR_NOT_FOUND)
-        if self.is_password_correct("test", collaborator.password) is False:
+        if self.is_password_correct(password, collaborator.password) is False:
             raise ValueError(utils.ERR_COLLABORATOR_NOT_FOUND)
         self.collaborator = collaborator
         return collaborator
@@ -28,7 +28,20 @@ class CollaboratorController:
         db_bytes = db_password.encode('utf-8')
         return bcrypt.checkpw(input_bytes, db_bytes)
 
-    def new_collaborator(self):
+    def manage_collaborators(self):
+        selection = self.view.input_collaborator_management()
+        match selection:
+            case 1:
+                self.create_collaborator()
+            case 2:
+                pass
+            case 3:
+                pass
+            case _:
+                return
+        return
+
+    def create_collaborator(self):
         email = self.view.input_email()
         if self.is_email_in_database(email):
             print(utils.ERR_EMAIL_ALREADY_EXISTS)
