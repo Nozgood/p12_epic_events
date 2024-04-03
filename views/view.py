@@ -1,5 +1,5 @@
 import models
-
+import utils
 
 class View:
     def __init__(self):
@@ -16,12 +16,12 @@ class View:
             menu_selection = int(
                 input("please insert the digit corresponding to the action you want to make: "))
         except ValueError:
-            print("please enter a digit value")
+            print(utils.ERR_NOT_DIGIT_VALUE)
         return menu_selection
 
     def display_main_menu(self):
+        print("(0) Exit the application")
         print("(1) Login")
-        print("(2) Exit the application")
         return self.input_menu_selection()
 
     @staticmethod
@@ -81,3 +81,48 @@ class View:
     @staticmethod
     def display_admin_menu():
         print("(4) Create a collaborator")
+
+    def input_new_collaborator(self):
+        print("-- New Collaborator Management --")
+        first_name = self.input_first_name()
+        last_name = self.input_last_name()
+        password = self.input_password()
+        role = self.input_collaborator_role()
+        return {
+            "first_name": first_name,
+            "last_name": last_name,
+            "password": password,
+            "role": role
+        }
+
+    @staticmethod
+    def input_first_name():
+        return input("First name: ")
+
+    @staticmethod
+    def input_last_name():
+        return input("Last name: ")
+
+    def input_collaborator_role(self):
+        print(f"(1) {models.CollaboratorRole.MANAGEMENT}")
+        print(f"(2) {models.CollaboratorRole.COMMERCIAL}")
+        print(f"(3) {models.CollaboratorRole.SUPPORT}")
+        role_selection = 0
+        while role_selection <= 0 or role_selection > 3:
+            try:
+                role_selection = int(input("Role of new collaborator: "))
+                if role_selection > 3:
+                    raise ValueError
+            except ValueError:
+                self.display_error(utils.ERR_NOT_DIGIT_VALUE)
+        match role_selection:
+            case 1:
+                return models.CollaboratorRole.MANAGEMENT
+            case 2:
+                return models.CollaboratorRole.COMMERCIAL
+            case _:
+                return models.CollaboratorRole.SUPPORT
+
+    @staticmethod
+    def display_new_collaborator_validation():
+        print("New collaborator correctly created")

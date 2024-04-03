@@ -1,8 +1,6 @@
 import models
 import bcrypt
-
-ERR_COLLABORATOR_NOT_FOUND = "Collaborator not found, email or password incorrect"
-ERR_MENU_INPUT = "Not valid menu selection"
+import utils
 
 
 class CollaboratorController:
@@ -12,13 +10,13 @@ class CollaboratorController:
         self.collaborator = collaborator
 
     def login(self):
-        email = self.view.input_email()
-        password = self.view.input_password()
-        collaborator = self.session.query(models.Collaborator).filter_by(email=email).first()
+        #email = self.view.input_email()
+        #password = self.view.input_password()
+        collaborator = self.session.query(models.Collaborator).filter_by(email="nowfeel@epic.io").first()
         if collaborator is None:
-            raise ValueError(ERR_COLLABORATOR_NOT_FOUND)
-        if self.is_password_correct(password, collaborator.password) is False:
-            raise ValueError(ERR_COLLABORATOR_NOT_FOUND)
+            raise ValueError(utils.ERR_COLLABORATOR_NOT_FOUND)
+        if self.is_password_correct("test", collaborator.password) is False:
+            raise ValueError(utils.ERR_COLLABORATOR_NOT_FOUND)
         self.collaborator = collaborator
         return collaborator
 
@@ -28,44 +26,31 @@ class CollaboratorController:
         db_bytes = db_password.encode('utf-8')
         return bcrypt.checkpw(input_bytes, db_bytes)
 
-    def get_collaborator_menu(self):
-        running = True
-        while running:
-            menu_selection = self.view.display_collaborator_menu(self.collaborator.role)
-            if menu_selection == 0:
-                running = False
-            match self.collaborator.role:
-                case models.CollaboratorRole.MANAGEMENT:
-                    self.process_management_action(menu_selection)
-                case models.CollaboratorRole.COMMERCIAL:
-                    self.process_commercial_action(menu_selection)
-                case models.CollaboratorRole.SUPPORT:
-                    self.process_support_action(menu_selection)
-                case _:
-                    self.process_admin_action(menu_selection)
-
-    def process_management_action(self, menu_selection):
-        if menu_selection > 7:
-            self.view.display_error(ERR_MENU_INPUT)
+    def new_collaborator(self):
+        email = self.view.input_email()
+        if self.is_email_in_database(email):
+            print(utils.ERR_EMAIL_ALREADY_EXISTS)
             return
-
-    def process_commercial_action(self, menu_selection):
-        if menu_selection > 8:
-            self.view.display_error(ERR_MENU_INPUT)
+        new_collaborator_input = self.view.input_new_collaborator()
+        new_collaborator_input["email"] = email
+        new_collaborator = models.Collaborator(
+            first_name=new_collaborator_input["first_name"],
+            last_name=new_collaborator_input["last_name"],
+            email=new_collaborator_input["email"],
+            password=new_collaborator_input["password"],
+            role=new_collaborator_input["role"]
+        )
+        self.session.add(new_collaborator)
+        try:
+            self.session.commit()
+        except Exception as err:
+            self.view.display_error(err)
             return
+        self.view.display_new_collaborator_validation()
+        return
 
-    def process_support_action(self, menu_selection):
-        if menu_selection > 5:
-            self.view.display_error(ERR_MENU_INPUT)
-            return
-
-    def process_admin_action(self, menu_selection):
-        if menu_selection > 4:
-            self.view.display_error(ERR_MENU_INPUT)
-            return
-
-        if menu_selection == 4:
-            print("hello bro on va créer un collaborateur maintenant")
+    def is_email_in_database(self, email):
+        return self.session.query(models.Collaborator).filter_by(email=email).first() is not None
 
     def get_permissions_by_role(self):
         permissions = models.CollaboratorPermission
