@@ -1,6 +1,7 @@
 import models
 import utils
 
+
 class View:
     def __init__(self):
         return
@@ -14,7 +15,8 @@ class View:
         menu_selection = ""
         try:
             menu_selection = int(
-                input("please insert the digit corresponding to the action you want to make: "))
+                input("please insert the digit corresponding to the action "
+                      "you want to make: "))
         except ValueError:
             print(utils.ERR_NOT_DIGIT_VALUE)
         return menu_selection

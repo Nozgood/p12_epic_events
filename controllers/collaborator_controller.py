@@ -12,7 +12,9 @@ class CollaboratorController:
     def login(self):
         #email = self.view.input_email()
         #password = self.view.input_password()
-        collaborator = self.session.query(models.Collaborator).filter_by(email="nowfeel@epic.io").first()
+        collaborator = (self.session.query(models.Collaborator).
+                        filter_by(email="nowfeel@epic.io").first()
+                        )
         if collaborator is None:
             raise ValueError(utils.ERR_COLLABORATOR_NOT_FOUND)
         if self.is_password_correct("test", collaborator.password) is False:
@@ -50,15 +52,24 @@ class CollaboratorController:
         return
 
     def is_email_in_database(self, email):
-        return self.session.query(models.Collaborator).filter_by(email=email).first() is not None
+        return (self.session.query(models.Collaborator).
+                filter_by(email=email).first() is not None)
 
     def get_permissions_by_role(self):
         permissions = models.CollaboratorPermission
         match self.collaborator.role:
             case models.CollaboratorRole.MANAGEMENT:
-                return [permissions.EDIT_COLLABORATOR, permissions.EDIT_DEAL, permissions.EDIT_EVENT]
+                return [
+                    permissions.EDIT_COLLABORATOR,
+                    permissions.EDIT_DEAL,
+                    permissions.EDIT_EVENT
+                ]
             case models.CollaboratorRole.COMMERCIAL:
-                return [permissions.EDIT_CUSTOMER, permissions.EDIT_DEAL, permissions.CREATE_EVENT]
+                return [
+                    permissions.EDIT_CUSTOMER,
+                    permissions.EDIT_DEAL,
+                    permissions.CREATE_EVENT
+                ]
             case models.CollaboratorRole.SUPPORT:
                 return [permissions.EDIT_EVENT]
             case models.CollaboratorRole.ADMIN:

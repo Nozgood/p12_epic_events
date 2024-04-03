@@ -4,7 +4,6 @@ from dotenv import load_dotenv
 import os
 from sqlalchemy.orm import sessionmaker
 
-import models.collaborator
 from controllers.collaborator_controller import CollaboratorController
 from controllers.main_controller import MainController
 from views.view import View
@@ -15,7 +14,8 @@ db_port = os.getenv("DB_PORT")
 db_user = os.getenv("DB_USER")
 db_password = os.getenv("DB_PASSWORD")
 db_name = os.getenv("DB_NAME")
-db_url = f"postgresql+psycopg2://{db_user}:{db_password}@localhost:{db_port}/{db_name}"
+db_url = (f"postgresql+psycopg2://{db_user}:"
+          f"{db_password}@localhost:{db_port}/{db_name}")
 
 
 def connect_to_db(url):
@@ -69,5 +69,9 @@ collaborator_controller = CollaboratorController(
     session=session,
     view=view,
 )
-main_controller = MainController(session=session, view=view, collaborator_controller=collaborator_controller)
+main_controller = MainController(
+    session=session,
+    view=view,
+    collaborator_controller=collaborator_controller
+)
 main_controller.run()

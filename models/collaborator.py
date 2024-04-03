@@ -41,7 +41,7 @@ class Collaborator(Base):
     email = Column(String(60), unique=True, index=True)
     password = Column(String(60), unique=True, index=True)
 
-    customers = relationship("Customer", back_populates="contact")  # back_populates = relation inverse
+    customers = relationship("Customer", back_populates="contact")
     deals = relationship("Deal", back_populates="contact")
     events = relationship("Event", back_populates="contact")
 
@@ -56,4 +56,8 @@ class Collaborator(Base):
         self.password = hashed_password
 
     def __repr__(self):
-        return f"Email: {self.email}" f" Role: {self.role} "  f"Name: {self.first_name} {self.last_name} "
+        return (
+            f"Email: {self.email}" 
+            f" Role: {self.role} "  
+            f"Name: {self.first_name} {self.last_name} "
+        )

@@ -31,7 +31,9 @@ class MainController:
     def get_collaborator_menu(self):
         running = True
         while running:
-            menu_selection = self.view.display_collaborator_menu(self.collaborator.role)
+            menu_selection = self.view.display_collaborator_menu(
+                self.collaborator.role
+            )
             if menu_selection == 0:
                 running = False
             match self.collaborator.role:
@@ -70,6 +72,6 @@ class MainController:
             case 3:
                 pass
             case 4:
-                new_collaborator = self.collaborator_controller.new_collaborator()
+                self.collaborator_controller.new_collaborator()
             case _:
                 self.view.display_error(ERR_MENU_INPUT)

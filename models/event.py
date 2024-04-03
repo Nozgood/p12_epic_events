@@ -9,7 +9,7 @@ class Event(Base):
     name = Column(String(50), unique=True, index=True)
     deal_id = Column(UUID, ForeignKey("deals.id"))
     customer_id = Column(UUID, ForeignKey("customers.id"))
-    contact_id = Column(UUID, ForeignKey("collaborators.id"))  # it must be a support role
+    contact_id = Column(UUID, ForeignKey("collaborators.id"))
     start_date = Column(DateTime, unique=False, index=True)
     end_date = Column(DateTime, unique=False, index=True)
     location = Column(String(50), unique=False, index=True)
