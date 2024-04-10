@@ -96,6 +96,19 @@ class View:
             "role": role
         }
 
+    def input_update_collaborator(self, collaborator):
+        print("-- Update Collaborator Management --")
+        email = self.input_email()
+        first_name = self.input_first_name()
+        last_name = self.input_last_name()
+        role = self.input_collaborator_role()
+        return {
+            "first_name": first_name,
+            "last_name": last_name,
+            "email": email,
+            "role": role
+        }
+
     @staticmethod
     def input_first_name():
         return input("First name: ")
@@ -128,19 +141,35 @@ class View:
     def display_new_collaborator_validation():
         print("New collaborator correctly created")
 
-
     @staticmethod
     def input_collaborator_management():
         print("(1) Create a new Collaborator")
         print("(2) Update a Collaborator")
         print("(3) Delete a Collaborator")
-        print("(4) Display Collaborator information")
         selection = 0
-        while selection <= 0 or selection > 4:
+        while selection <= 0 or selection > 3:
             try:
                 selection = int(input("Select an action: "))
-                if selection > 4:
+                if selection > 3:
                     raise ValueError
             except ValueError:
                 print(utils.ERR_MENU_INPUT)
         return selection
+
+    @staticmethod
+    def display_collaborator_information(collaborator):
+        print(
+            f"First Name: {collaborator.first_name} \n"
+            f"Last Name: {collaborator.last_name} \n"
+            f"Role: {collaborator.role} \n"
+            f"Email: {collaborator.email} \n"
+        )
+
+    @staticmethod
+    def display_update_collaborator_validation():
+        print("Collaborator successfully updated")
+
+
+    @staticmethod
+    def display_delete_collaborator_validation():
+        print("Collaborator successfully deleted")

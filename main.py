@@ -3,8 +3,6 @@ from sqlalchemy import create_engine
 from dotenv import load_dotenv
 import os
 from sqlalchemy.orm import sessionmaker
-
-from controllers.collaborator_controller import CollaboratorController
 from controllers.main_controller import MainController
 from views.view import View
 
@@ -65,13 +63,8 @@ session = Session()
 # exit()
 
 view = View()
-collaborator_controller = CollaboratorController(
-    session=session,
-    view=view,
-)
 main_controller = MainController(
     session=session,
-    view=view,
-    collaborator_controller=collaborator_controller
+    view=view
 )
 main_controller.run()

@@ -1,12 +1,17 @@
 import models
 from utils import ERR_MENU_INPUT
+import controllers
 
 
 class MainController:
-    def __init__(self, session, view, collaborator_controller):
+    def __init__(self, session, view):
+
         self.session = session
         self.view = view
-        self.collaborator_controller = collaborator_controller
+        self.collaborator_controller = controllers.CollaboratorController(
+            session=session,
+            view=view
+        )
         self.collaborator = None
 
     def run(self):

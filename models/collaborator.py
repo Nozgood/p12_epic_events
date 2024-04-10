@@ -21,6 +21,9 @@ class CollaboratorRole(enum.Enum):
     SUPPORT = 3
     ADMIN = 4
 
+    def __str__(self):
+        return self.name
+
 
 def create_hash_password(password: str) -> str:
     password_bytes = password.encode('utf-8')

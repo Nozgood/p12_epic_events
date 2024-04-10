@@ -1,3 +1,5 @@
+from setuptools.config._validate_pyproject import ValidationError
+
 import models
 import bcrypt
 import utils
@@ -34,9 +36,9 @@ class CollaboratorController:
             case 1:
                 self.create_collaborator()
             case 2:
-                pass
+                self.update_collaborator()
             case 3:
-                pass
+                self.delete_collaborator()
             case _:
                 return
         return
@@ -63,6 +65,43 @@ class CollaboratorController:
             return
         self.view.display_new_collaborator_validation()
         return
+
+    def update_collaborator(self):
+        try:
+            collaborator = self.get_collaborator()
+            self.view.display_collaborator_information(collaborator)
+            update_collaborator_input = self.view.input_update_collaborator(
+                collaborator)
+            collaborator.email = update_collaborator_input["email"]
+            collaborator.first_name = update_collaborator_input["first_name"]
+            collaborator.last_name = update_collaborator_input["last_name"]
+            collaborator.role = update_collaborator_input["role"]
+            self.session.commit()
+            return self.view.display_update_collaborator_validation()
+        except ValidationError:
+            return
+
+    def delete_collaborator(self):
+        try:
+            collaborator = self.get_collaborator()
+            self.session.delete(collaborator)
+            self.session.commit()
+            return self.view.display_delete_collaborator_validation()
+        except ValidationError:
+            return
+
+    def get_collaborator(self):
+        email = self.view.input_email()
+        collaborator = (
+            self.
+            session.
+            query(models.Collaborator).
+            filter_by(email=email).
+            first()
+        )
+        if collaborator is None:
+            raise ValidationError(utils.ERR_COLLABORATOR_NOT_FOUND)
+        return collaborator
 
     def is_email_in_database(self, email):
         return (self.session.query(models.Collaborator).
