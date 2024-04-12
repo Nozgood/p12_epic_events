@@ -169,7 +169,6 @@ class View:
     def display_update_collaborator_validation():
         print("Collaborator successfully updated")
 
-
     @staticmethod
     def display_delete_collaborator_validation():
         print("Collaborator successfully deleted")
