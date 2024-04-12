@@ -41,6 +41,7 @@ class MainController:
             )
             if menu_selection == 0:
                 running = False
+                continue
             match self.collaborator.role:
                 case models.CollaboratorRole.MANAGEMENT:
                     self.process_management_action(menu_selection)
@@ -53,8 +54,6 @@ class MainController:
 
     def process_management_action(self, menu_selection):
         match menu_selection:
-            case 0:
-                return
             case 1:
                 pass
             case 2:
@@ -82,8 +81,6 @@ class MainController:
 
     def process_admin_action(self, menu_selection):
         match menu_selection:
-            case 0:
-                return
             case 1:
                 pass
             case 2:
