@@ -1,5 +1,3 @@
-from setuptools.config._validate_pyproject import ValidationError
-
 import models
 import bcrypt
 import utils
@@ -40,13 +38,13 @@ class CollaboratorController:
             case 3:
                 self.delete_collaborator()
             case _:
-                return
+                self.view.display_error(utils.ERR_MENU_INPUT)
         return
 
     def create_collaborator(self):
         email = self.view.input_email()
         if self.is_email_in_database(email):
-            print(utils.ERR_EMAIL_ALREADY_EXISTS)
+            self.view.display_error(utils.ERR_EMAIL_ALREADY_EXISTS)
             return
         new_collaborator_input = self.view.input_new_collaborator()
         new_collaborator_input["email"] = email
@@ -63,8 +61,7 @@ class CollaboratorController:
         except Exception as err:
             self.view.display_error(err)
             return
-        self.view.display_new_collaborator_validation()
-        return
+        return self.view.display_new_collaborator_validation()
 
     def update_collaborator(self):
         try:
@@ -78,7 +75,7 @@ class CollaboratorController:
             collaborator.role = update_collaborator_input["role"]
             self.session.commit()
             return self.view.display_update_collaborator_validation()
-        except ValidationError:
+        except ValueError:
             return
 
     def delete_collaborator(self):
@@ -87,7 +84,7 @@ class CollaboratorController:
             self.session.delete(collaborator)
             self.session.commit()
             return self.view.display_delete_collaborator_validation()
-        except ValidationError:
+        except ValueError:
             return
 
     def get_collaborator(self):
@@ -100,31 +97,9 @@ class CollaboratorController:
             first()
         )
         if collaborator is None:
-            raise ValidationError(utils.ERR_COLLABORATOR_NOT_FOUND)
+            raise ValueError(utils.ERR_COLLABORATOR_NOT_FOUND)
         return collaborator
 
     def is_email_in_database(self, email):
         return (self.session.query(models.Collaborator).
                 filter_by(email=email).first() is not None)
-
-    def get_permissions_by_role(self):
-        permissions = models.CollaboratorPermission
-        match self.collaborator.role:
-            case models.CollaboratorRole.MANAGEMENT:
-                return [
-                    permissions.EDIT_COLLABORATOR,
-                    permissions.EDIT_DEAL,
-                    permissions.EDIT_EVENT
-                ]
-            case models.CollaboratorRole.COMMERCIAL:
-                return [
-                    permissions.EDIT_CUSTOMER,
-                    permissions.EDIT_DEAL,
-                    permissions.CREATE_EVENT
-                ]
-            case models.CollaboratorRole.SUPPORT:
-                return [permissions.EDIT_EVENT]
-            case models.CollaboratorRole.ADMIN:
-                return [permissions.ALL_PERMISSIONS]
-            case _:
-                return []
