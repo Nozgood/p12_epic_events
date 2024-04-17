@@ -1,30 +1,49 @@
 import models
 import utils
 from rich.console import Console
+from rich.panel import Panel
+from rich.theme import Theme
+
+theme = Theme({
+    "error": "red",
+    "menu_selection": "bright_blue bold",
+    "menu_text": "bright_blue"
+})
 
 
 class View:
     def __init__(self):
-        self.console = Console()
+        self.console = Console(theme=theme)
 
     def input_welcome(self):
-        self.console.print("\n --- Welcome to Epic Events CRM --- \n")
+        self.console.print(
+            Panel(
+                "--- Welcome to Epic Events CRM ---",
+                expand=True),
+            style="bold blue",
+            justify="center"
+        )
 
     def input_menu_selection(self):
         menu_selection = ""
-        try:
-            self.console.print(
-                "please insert the digit corresponding to the action "
-                "you want to make:"
-            )
-            menu_selection = int(input())
-        except ValueError:
-            self.console.print(utils.ERR_NOT_DIGIT_VALUE)
+        while menu_selection == "":
+            try:
+                self.console.print(
+                    "please insert the digit corresponding to the action "
+                    "you want to make:"
+                )
+                menu_selection = int(input())
+            except ValueError:
+                self.display_error(utils.ERR_NOT_DIGIT_VALUE)
         return menu_selection
 
     def display_main_menu(self):
-        self.console.print("(0) Exit the application")
-        self.console.print("(1) Login")
+
+        self.console.print(
+            "[menu_selection]0[/] - Exit the application")
+        self.console.print(
+            "[menu_selection]1[/] - Login"
+        )
         return self.input_menu_selection()
 
     def input_email(self):
@@ -36,7 +55,7 @@ class View:
         return input()
 
     def display_error(self, err):
-        self.console.print(f"{err}")
+        self.console.print(f"[bold]Error[/]: {err}", style="error")
 
     def input_welcome_user(self, collaborator):
         self.console.print(f"Welcome Back {collaborator.first_name}")

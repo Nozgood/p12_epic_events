@@ -32,6 +32,8 @@ class MainController:
                     self.collaborator = collaborator
                     self.view.input_welcome_user(self.collaborator)
                     self.get_collaborator_menu()
+                case _:
+                    self.view.display_error(ERR_MENU_INPUT)
 
     def get_collaborator_menu(self):
         running = True
