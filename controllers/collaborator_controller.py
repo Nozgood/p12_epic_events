@@ -31,6 +31,8 @@ class CollaboratorController:
     def manage_collaborators(self):
         selection = self.view.input_collaborator_management()
         match selection:
+            case 0:
+                return
             case 1:
                 self.create_collaborator()
             case 2:
@@ -67,8 +69,7 @@ class CollaboratorController:
         try:
             collaborator = self.get_collaborator()
             self.view.display_collaborator_information(collaborator)
-            update_collaborator_input = self.view.input_update_collaborator(
-                collaborator)
+            update_collaborator_input = self.view.input_update_collaborator()
             collaborator.email = update_collaborator_input["email"]
             collaborator.first_name = update_collaborator_input["first_name"]
             collaborator.last_name = update_collaborator_input["last_name"]
