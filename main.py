@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 import os
 from sqlalchemy.orm import sessionmaker
 from controllers.main_controller import MainController
-from views.view import View
+import themes
 
 load_dotenv()
 
@@ -62,9 +62,8 @@ session = Session()
 # session.commit()
 # exit()
 
-view = View()
 main_controller = MainController(
     session=session,
-    view=view
+    console=themes.set_rich_console()
 )
 main_controller.run()

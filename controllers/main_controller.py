@@ -1,18 +1,36 @@
 import models
 from utils import ERR_MENU_INPUT
 import controllers
+import views
 
 
 class MainController:
-    def __init__(self, session, view):
+    def __init__(self, session, console):
 
         self.session = session
-        self.view = view
+        self.view = views.MainView(console=console)
+        self.collaborator = None
+
         self.collaborator_controller = controllers.CollaboratorController(
             session=session,
-            view=view
+            view=views.CollaboratorView(console=console)
         )
-        self.collaborator = None
+
+        self.customer_controller = controllers.CustomerController(
+            session=session,
+            view=views.CustomerView(console=console)
+        )
+
+        self.deal_controller = controllers.DealController(
+            session=session,
+            view=views.DealView(console=console)
+        )
+
+        self.event_controller = controllers.EventController(
+            session=session,
+            view=views.EventView(console=console)
+        )
+
 
     def run(self):
         self.view.input_welcome()
@@ -29,17 +47,28 @@ class MainController:
                     except ValueError as err:
                         self.view.display_error(err)
                         continue
-                    self.collaborator = collaborator
+                    self.set_collaborator_to_controllers(collaborator)
                     self.view.input_welcome_user(self.collaborator)
                     self.get_collaborator_menu()
                 case _:
                     self.view.display_error(ERR_MENU_INPUT)
 
+    def set_collaborator_to_controllers(self, collaborator):
+        self.collaborator = collaborator
+        self.customer_controller.collaborator = collaborator
+        self.deal_controller.collaborator = collaborator
+        self.event_controller.collaborator = collaborator
+
     def get_collaborator_menu(self):
         running = True
         while running:
-            menu_selection = self.view.display_collaborator_menu(
-                self.collaborator.role
+            menu_selection = (
+                self.
+                collaborator_controller.
+                view.
+                display_collaborator_menu(
+                    self.collaborator.role
+                )
             )
             if menu_selection == 0:
                 running = False
@@ -72,9 +101,25 @@ class MainController:
                 self.view.display_error(ERR_MENU_INPUT)
 
     def process_commercial_action(self, menu_selection):
-        if menu_selection > 8:
-            self.view.display_error(ERR_MENU_INPUT)
-            return
+        match menu_selection:
+            case 1:
+                pass
+            case 2:
+                pass
+            case 3:
+                pass
+            case 4:
+                self.customer_controller.create_customer()
+            case 5:
+                pass
+            case 6:
+                pass
+            case 7:
+                pass
+            case 8:
+                pass
+            case _:
+                self.view.display_error(ERR_MENU_INPUT)
 
     def process_support_action(self, menu_selection):
         if menu_selection > 5:

@@ -1,67 +1,33 @@
+import views
 import models
-import utils
-from rich.console import Console
 from rich.panel import Panel
-from rich.theme import Theme
-
-theme = Theme({
-    "error": "red",
-    "success": "bold green",
-    "menu_selection": "bright_blue bold",
-    "menu_text": "bright_blue",
-    "panel": "bold blue",
-    "input": "bold cyan"
-})
+import utils
 
 
-class View:
-    def __init__(self):
-        self.console = Console(theme=theme)
-
-    def input_welcome(self):
-        self.console.print(
-            Panel(
-                "--- Welcome to Epic Events CRM ---",
-                expand=True),
-            style="panel",
-            justify="center"
-        )
-
-    def input_menu_selection(self):
-        menu_selection = ""
-        while menu_selection == "":
+class CollaboratorView(views.BaseView):
+    def input_collaborator_management(self):
+        self.console.print("[menu_selection]0[/] - Exit")
+        self.console.print("[menu_selection]1[/] - Create a new Collaborator")
+        self.console.print("[menu_selection]2[/] - Update a Collaborator")
+        self.console.print("[menu_selection]3[/] - Delete a Collaborator")
+        selection = -1
+        while selection < 0 or selection > 3:
             try:
-                self.console.print(
-                    "\n please insert the digit corresponding to the action "
-                    "you want to make:",
-                    style="input"
-                )
-                menu_selection = int(input())
+                self.console.print("Select an action:", style="input")
+                selection = int(input())
+                if selection > 3 or selection < 0:
+                    raise ValueError
             except ValueError:
-                self.display_error(utils.ERR_NOT_DIGIT_VALUE)
-        return menu_selection
+                self.console.print(utils.ERR_MENU_INPUT)
+        return selection
 
-    def display_main_menu(self):
+    def input_email(self):
+        self.console.print("email:", style="input")
+        return input()
 
-        self.console.print(
-            "[menu_selection]0[/] - Exit the application")
-        self.console.print(
-            "[menu_selection]1[/] - Login"
-        )
-        return self.input_menu_selection()
-
-    def display_error(self, err):
-        self.console.print(f"[bold]Error[/]: {err}", style="error")
-
-    def input_welcome_user(self, collaborator):
-        self.console.print(
-            Panel(
-                f"--- Welcome Back {collaborator.first_name} ---",
-                expand=True
-            ),
-            style="panel",
-            justify="center"
-        )
+    def input_password(self):
+        self.console.print("password:", style="input")
+        return input()
 
     def display_collaborator_menu(self, role: models.CollaboratorRole):
         self.console.print("[menu_selection]0[/] - Logout")
@@ -135,13 +101,25 @@ class View:
             "role": role
         }
 
-    def input_email(self):
-        self.console.print("email:", style="input")
-        return input()
+    def display_collaborator_information(self, collaborator):
+        self.console.print(
+            f"First Name: {collaborator.first_name} \n"
+            f"Last Name: {collaborator.last_name} \n"
+            f"Role: {collaborator.role} \n"
+            f"Email: {collaborator.email} \n"
+        )
 
-    def input_password(self):
-        self.console.print("password:", style="input")
-        return input()
+    def display_update_collaborator_validation(self):
+        self.console.print("Collaborator successfully updated", style="success")
+
+    def display_delete_collaborator_validation(self):
+        self.console.print("Collaborator successfully deleted", style="success")
+
+    def display_new_collaborator_validation(self):
+        self.console.print(
+            "New collaborator correctly created",
+            style="success"
+        )
 
     def input_first_name(self):
         self.console.print("First name:", style="input")
@@ -181,39 +159,3 @@ class View:
                 return models.CollaboratorRole.COMMERCIAL
             case _:
                 return models.CollaboratorRole.SUPPORT
-
-    def input_collaborator_management(self):
-        self.console.print("[menu_selection]0[/] - Exit")
-        self.console.print("[menu_selection]1[/] - Create a new Collaborator")
-        self.console.print("[menu_selection]2[/] - Update a Collaborator")
-        self.console.print("[menu_selection]3[/] - Delete a Collaborator")
-        selection = -1
-        while selection < 0 or selection > 3:
-            try:
-                self.console.print("Select an action:", style="input")
-                selection = int(input())
-                if selection > 3 or selection < 0:
-                    raise ValueError
-            except ValueError:
-                self.console.print(utils.ERR_MENU_INPUT)
-        return selection
-
-    def display_collaborator_information(self, collaborator):
-        self.console.print(
-            f"First Name: {collaborator.first_name} \n"
-            f"Last Name: {collaborator.last_name} \n"
-            f"Role: {collaborator.role} \n"
-            f"Email: {collaborator.email} \n"
-        )
-
-    def display_update_collaborator_validation(self):
-        self.console.print("Collaborator successfully updated", style="success")
-
-    def display_delete_collaborator_validation(self):
-        self.console.print("Collaborator successfully deleted", style="success")
-
-    def display_new_collaborator_validation(self):
-        self.console.print(
-            "New collaborator correctly created",
-            style="success"
-        )
