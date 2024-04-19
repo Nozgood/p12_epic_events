@@ -6,8 +6,11 @@ from rich.theme import Theme
 
 theme = Theme({
     "error": "red",
+    "success": "bold green",
     "menu_selection": "bright_blue bold",
-    "menu_text": "bright_blue"
+    "menu_text": "bright_blue",
+    "panel": "bold blue",
+    "input": "bold cyan"
 })
 
 
@@ -20,7 +23,7 @@ class View:
             Panel(
                 "--- Welcome to Epic Events CRM ---",
                 expand=True),
-            style="bold blue",
+            style="panel",
             justify="center"
         )
 
@@ -29,8 +32,9 @@ class View:
         while menu_selection == "":
             try:
                 self.console.print(
-                    "please insert the digit corresponding to the action "
-                    "you want to make:"
+                    "\n please insert the digit corresponding to the action "
+                    "you want to make:",
+                    style="input"
                 )
                 menu_selection = int(input())
             except ValueError:
@@ -46,25 +50,24 @@ class View:
         )
         return self.input_menu_selection()
 
-    def input_email(self):
-        self.console.print("email:")
-        return input()
-
-    def input_password(self):
-        self.console.print("password:")
-        return input()
-
     def display_error(self, err):
         self.console.print(f"[bold]Error[/]: {err}", style="error")
 
     def input_welcome_user(self, collaborator):
-        self.console.print(f"Welcome Back {collaborator.first_name}")
+        self.console.print(
+            Panel(
+                f"--- Welcome Back {collaborator.first_name} ---",
+                expand=True
+            ),
+            style="panel",
+            justify="center"
+        )
 
     def display_collaborator_menu(self, role: models.CollaboratorRole):
-        self.console.print("(0) Logout")
-        self.console.print("(1) Display All Customers")
-        self.console.print("(2) Display All Deals")
-        self.console.print("(3) Display All Events")
+        self.console.print("[menu_selection]0[/] - Logout")
+        self.console.print("[menu_selection]1[/] - Display All Customers")
+        self.console.print("[menu_selection]2[/] - Display All Deals")
+        self.console.print("[menu_selection]3[/] - Display All Events")
 
         match role:
             case models.CollaboratorRole.MANAGEMENT:
@@ -79,26 +82,35 @@ class View:
         return self.input_menu_selection()
 
     def display_management_menu(self):
-        self.console.print("(4) Manage Events")
-        self.console.print("(5) Manage Collaborators")
-        self.console.print("(6) Manage Deals")
+        self.console.print("[menu_selection]4[/] - Manage Events")
+        self.console.print("[menu_selection]5[/] - Manage Collaborators")
+        self.console.print("[menu_selection]6[/] - Manage Deals")
 
     def display_commercial_menu(self):
-        self.console.print("(4) Create a new Customer")
-        self.console.print("(5) Manage your Customers")
-        self.console.print("(6) Manage your Customers Deals")
-        self.console.print("(7) Filter and Display Deals")
-        self.console.print("(8) Create an Event for a Customer")
+        self.console.print("[menu_selection]4[/] - Create a new Customer")
+        self.console.print("[menu_selection]5[/] - Manage your Customers")
+        self.console.print("[menu_selection]6[/] - Manage your Customers Deals")
+        self.console.print("[menu_selection]7[/] - Filter and Display Deals")
+        self.console.print(
+            "[menu_selection]8[/] - Create an Event for a Customer"
+        )
 
     def display_support_menu(self):
-        self.console.print("(4) Filter and display Events")
-        self.console.print("(5) Manage your Events")
+        self.console.print("[menu_selection]4[/] - Filter and display Events")
+        self.console.print("[menu_selection]5[/] - Manage your Events")
 
     def display_admin_menu(self):
-        self.console.print("(4) Create a collaborator")
+        self.console.print("[menu_selection]4[/] - Create a collaborator")
 
     def input_new_collaborator(self):
-        self.console.print("-- New Collaborator Management --")
+        self.console.print(
+            Panel(
+                "--- New Collaborator Management ---",
+                expand=True
+            ),
+            style="panel",
+            justify="center"
+        )
         first_name = self.input_first_name()
         last_name = self.input_last_name()
         password = self.input_password()
@@ -111,7 +123,7 @@ class View:
         }
 
     def input_update_collaborator(self):
-        self.console.print("-- Update Collaborator Management --")
+        self.console.print("--- Update Collaborator Management ---")
         email = self.input_email()
         first_name = self.input_first_name()
         last_name = self.input_last_name()
@@ -123,22 +135,40 @@ class View:
             "role": role
         }
 
+    def input_email(self):
+        self.console.print("email:", style="input")
+        return input()
+
+    def input_password(self):
+        self.console.print("password:", style="input")
+        return input()
+
     def input_first_name(self):
-        self.console.print("First name:")
+        self.console.print("First name:", style="input")
         return input()
 
     def input_last_name(self):
-        self.console.print("Last name:")
+        self.console.print("Last name:", style="input")
         return input()
 
     def input_collaborator_role(self):
-        self.console.print(f"(1) {models.CollaboratorRole.MANAGEMENT}")
-        self.console.print(f"(2) {models.CollaboratorRole.COMMERCIAL}")
-        self.console.print(f"(3) {models.CollaboratorRole.SUPPORT}")
+        self.console.print(
+            f"[menu_selection]1[/] - {models.CollaboratorRole.MANAGEMENT}"
+        )
+        self.console.print(
+            f"[menu_selection]2[/] - {models.CollaboratorRole.COMMERCIAL}"
+        )
+        self.console.print(
+            f"[menu_selection]3[/] - {models.CollaboratorRole.SUPPORT}"
+        )
+
         role_selection = 0
         while role_selection <= 0 or role_selection > 3:
             try:
-                self.console.print("Role of new collaborator:")
+                self.console.print(
+                    "Role of new collaborator: (enter the digit value)",
+                    style="input"
+                )
                 role_selection = int(input())
                 if role_selection > 3:
                     raise ValueError
@@ -152,18 +182,15 @@ class View:
             case _:
                 return models.CollaboratorRole.SUPPORT
 
-    def display_new_collaborator_validation(self):
-        self.console.print("New collaborator correctly created")
-
     def input_collaborator_management(self):
-        self.console.print("(0) Exit")
-        self.console.print("(1) Create a new Collaborator")
-        self.console.print("(2) Update a Collaborator")
-        self.console.print("(3) Delete a Collaborator")
+        self.console.print("[menu_selection]0[/] - Exit")
+        self.console.print("[menu_selection]1[/] - Create a new Collaborator")
+        self.console.print("[menu_selection]2[/] - Update a Collaborator")
+        self.console.print("[menu_selection]3[/] - Delete a Collaborator")
         selection = -1
         while selection < 0 or selection > 3:
             try:
-                self.console.print("Select an action:")
+                self.console.print("Select an action:", style="input")
                 selection = int(input())
                 if selection > 3 or selection < 0:
                     raise ValueError
@@ -180,7 +207,13 @@ class View:
         )
 
     def display_update_collaborator_validation(self):
-        self.console.print("Collaborator successfully updated")
+        self.console.print("Collaborator successfully updated", style="success")
 
     def display_delete_collaborator_validation(self):
-        self.console.print("Collaborator successfully deleted")
+        self.console.print("Collaborator successfully deleted", style="success")
+
+    def display_new_collaborator_validation(self):
+        self.console.print(
+            "New collaborator correctly created",
+            style="success"
+        )
