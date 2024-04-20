@@ -31,7 +31,6 @@ class MainController:
             view=views.EventView(console=console)
         )
 
-
     def run(self):
         self.view.input_welcome()
         running = True
@@ -49,7 +48,7 @@ class MainController:
                         continue
                     self.set_collaborator_to_controllers(collaborator)
                     self.view.input_welcome_user(self.collaborator)
-                    self.get_collaborator_menu()
+                    self.get_collaborator_main_menu()
                 case _:
                     self.view.display_error(ERR_MENU_INPUT)
 
@@ -59,7 +58,7 @@ class MainController:
         self.deal_controller.collaborator = collaborator
         self.event_controller.collaborator = collaborator
 
-    def get_collaborator_menu(self):
+    def get_collaborator_main_menu(self):
         running = True
         while running:
             menu_selection = (

@@ -66,69 +66,90 @@ class MainControllerCollaboratorMenu(TestCase):
                 role=""
             )
 
-    def test_get_collaborator_exit(self):
-        self.controller.view.display_collaborator_menu.return_value = 0
+    def test_get_collaborator_main_menu_exit(self):
+        self.controller.collaborator_controller.view.display_collaborator_menu.return_value = 0
         with (
             patch.object(self.controller, "process_commercial_action")
             as mock_process_commercial_action
         ):
-            self.controller.get_collaborator_menu()
+            self.controller.get_collaborator_main_menu()
             mock_process_commercial_action.assert_not_called()
-            self.controller.view.display_collaborator_menu.assert_called_once()
+            self.controller.collaborator_controller.view.display_collaborator_menu.assert_called_once()
 
-    def test_get_collaborator_menu_management(self):
+    def test_get_collaborator_main_menu_management(self):
         self.controller.collaborator.role = models.CollaboratorRole.MANAGEMENT
-        self.controller.view.display_collaborator_menu.side_effect = [1, 0]
+        self.controller.collaborator_controller.view.display_collaborator_menu.side_effect = [1, 0]
         with (
             patch.object(self.controller, "process_management_action")
             as mock_process_management_action
         ):
-            self.controller.get_collaborator_menu()
+            self.controller.get_collaborator_main_menu()
             mock_process_management_action.assert_called_once()
             self.assertEqual(
-                self.controller.view.display_collaborator_menu.call_count,
+                self.
+                controller.
+                collaborator_controller.
+                view.
+                display_collaborator_menu.
+                call_count,
                 2
             )
 
-    def test_get_collaborator_menu_commercial(self):
+    def test_get_collaborator_main_menu_commercial(self):
         self.controller.collaborator.role = models.CollaboratorRole.COMMERCIAL
-        self.controller.view.display_collaborator_menu.side_effect = [1, 0]
+        self.controller.collaborator_controller.view.display_collaborator_menu.side_effect = [1, 0]
         with (
             patch.object(self.controller, "process_commercial_action")
             as mock_process_commercial_action
         ):
-            self.controller.get_collaborator_menu()
+            self.controller.get_collaborator_main_menu()
             mock_process_commercial_action.assert_called_once()
             self.assertEqual(
-                self.controller.view.display_collaborator_menu.call_count,
+                self.controller.collaborator_controller.view.display_collaborator_menu.call_count,
                 2
             )
 
-    def test_get_collaborator_menu_support(self):
+    def test_get_collaborator_main_menu_support(self):
         self.controller.collaborator.role = models.CollaboratorRole.SUPPORT
-        self.controller.view.display_collaborator_menu.side_effect = [1, 0]
+        self.controller.collaborator_controller.view.display_collaborator_menu.side_effect = [1, 0]
         with (
             patch.object(self.controller, "process_support_action")
             as mock_process_support_action
         ):
-            self.controller.get_collaborator_menu()
+            self.controller.get_collaborator_main_menu()
             mock_process_support_action.assert_called_once()
             self.assertEqual(
-                self.controller.view.display_collaborator_menu.call_count,
+                self.
+                controller.
+                collaborator_controller.
+                view.
+                display_collaborator_menu.
+                call_count,
                 2
             )
 
-    def test_get_collaborator_menu_admin(self):
+    def test_get_collaborator_main_menu_admin(self):
         self.controller.collaborator.role = models.CollaboratorRole.ADMIN
-        self.controller.view.display_collaborator_menu.side_effect = [1, 0]
+        (
+            self.
+            controller.
+            collaborator_controller.
+            view.
+            display_collaborator_menu
+        ).side_effect = [1, 0]
         with (
             patch.object(self.controller, "process_admin_action")
             as mock_process_admin_action
         ):
-            self.controller.get_collaborator_menu()
+            self.controller.get_collaborator_main_menu()
             mock_process_admin_action.assert_called_once()
             self.assertEqual(
-                self.controller.view.display_collaborator_menu.call_count,
+                self.
+                controller.
+                collaborator_controller.
+                view.
+                display_collaborator_menu.
+                call_count,
                 2
             )
 
