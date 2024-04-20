@@ -14,7 +14,7 @@ db_password = os.getenv("DB_PASSWORD")
 db_name = os.getenv("DB_NAME")
 db_url = (f"postgresql+psycopg2://{db_user}:"
           f"{db_password}@localhost:{db_port}/{db_name}")
-
+print(db_url)
 
 def connect_to_db(url):
     engine = None

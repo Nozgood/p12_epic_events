@@ -29,8 +29,8 @@ class Customer(Base):
     __tablename__ = 'customers'
 
     id = Column(UUID, primary_key=True, index=True)
-    first_name = Column(String(50), unique=True, index=True)
-    last_name = Column(String(50), unique=True, index=True)
+    first_name = Column(String(50), unique=False, index=True)
+    last_name = Column(String(50), unique=False, index=True)
     email = Column(String(50), unique=True, index=True)
     phone = Column(String(20), unique=True, index=True)
     corporation = Column(String(100), unique=False, index=True)

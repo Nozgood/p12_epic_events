@@ -26,6 +26,31 @@ then you will need to set few variables:
 - "DB_PASSWORD"
 - "DB_NAME"
 
+### Migrations
+
+To manage migrations we use alembic, if you correctly installed it should be already available in your env
+But if you want to install this tool by yourself: 
+```shell
+pip install alembic
+```
+If you want to change the database on which you will do your migrations, don't forget to edit the `alembic.ini` file 
+and set the variable `sqlalchemy.url`
+
+**How Alembic runs ?**
+
+When you will do a change on the models, run this command in the terminal, at the root of the project:
+```shell
+alembic revision --autogenerate -m "Description of the change"
+```
+
+It will generate a migration file in the directory `migrations/versions`
+
+Then, when you're ready to process the migration:
+```shell
+alembic upgrade head
+```
+
+WARN: Migrations can make huge damages to the DB if they are not correctly managed, please be careful when you set one
 
 ## Tests
 
