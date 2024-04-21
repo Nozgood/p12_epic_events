@@ -1,5 +1,5 @@
 import models
-import utils
+import errors
 from rich.panel import Panel
 import themes
 import views

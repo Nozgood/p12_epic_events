@@ -1,7 +1,7 @@
 import views
 import models
 from rich.panel import Panel
-import utils
+import errors
 
 
 class CollaboratorView(views.BaseView):
@@ -18,7 +18,7 @@ class CollaboratorView(views.BaseView):
                 if selection > 3 or selection < 0:
                     raise ValueError
             except ValueError:
-                self.console.print(utils.ERR_MENU_INPUT)
+                self.console.print(errors.ERR_MENU_INPUT)
         return selection
 
     def input_email(self):
@@ -68,8 +68,8 @@ class CollaboratorView(views.BaseView):
     def display_admin_menu(self):
         self.console.print("[menu_selection]4[/] - Create a collaborator")
 
-    def input_new_collaborator(self):
-        self.console.print(
+    def display_new_collaborator_panel(self):
+        return self.console.print(
             Panel(
                 "--- New Collaborator Management ---",
                 expand=True
@@ -77,14 +77,14 @@ class CollaboratorView(views.BaseView):
             style="panel",
             justify="center"
         )
+
+    def input_new_collaborator(self):
         first_name = self.input_first_name()
         last_name = self.input_last_name()
-        password = self.input_password()
         role = self.input_collaborator_role()
         return {
             "first_name": first_name,
             "last_name": last_name,
-            "password": password,
             "role": role
         }
 
@@ -151,7 +151,7 @@ class CollaboratorView(views.BaseView):
                 if role_selection > 3:
                     raise ValueError
             except ValueError:
-                self.display_error(utils.ERR_NOT_DIGIT_VALUE)
+                self.display_error(errors.ERR_NOT_DIGIT_VALUE)
         match role_selection:
             case 1:
                 return models.CollaboratorRole.MANAGEMENT

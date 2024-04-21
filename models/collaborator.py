@@ -60,7 +60,7 @@ class Collaborator(Base):
 
     def __repr__(self):
         return (
-            f"Email: {self.email}" 
-            f" Role: {self.role} "  
+            f"Email: {self.email} " 
+            f"Role: {self.role} "  
             f"Name: {self.first_name} {self.last_name} "
         )

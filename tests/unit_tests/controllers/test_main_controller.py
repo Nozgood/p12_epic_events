@@ -1,7 +1,7 @@
 from unittest import TestCase
 from unittest.mock import patch
 import models
-import utils
+import errors
 from tests.conftest import create_mock_main_controller
 
 
@@ -19,7 +19,7 @@ class MainControllerRun(TestCase):
     def test_run_login_raise_exception(self):
         self.controller.view.display_main_menu.side_effect = [1, 0]
         self.controller.collaborator_controller.login.side_effect = ValueError(
-            utils.ERR_COLLABORATOR_NOT_FOUND
+            errors.ERR_COLLABORATOR_NOT_FOUND
         )
         with (
             patch.object(self.controller, "get_collaborator_menu")

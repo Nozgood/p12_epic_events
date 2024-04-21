@@ -1,4 +1,4 @@
-import utils
+import errors
 
 
 class BaseView:
@@ -19,5 +19,5 @@ class BaseView:
                 )
                 menu_selection = int(input())
             except ValueError:
-                self.display_error(utils.ERR_NOT_DIGIT_VALUE)
+                self.display_error(errors.ERR_NOT_DIGIT_VALUE)
         return menu_selection

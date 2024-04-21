@@ -1,5 +1,5 @@
 import models
-from utils import ERR_MENU_INPUT
+import errors
 import controllers
 import views
 
@@ -50,7 +50,7 @@ class MainController:
                     self.view.input_welcome_user(self.collaborator)
                     self.get_collaborator_main_menu()
                 case _:
-                    self.view.display_error(ERR_MENU_INPUT)
+                    self.view.display_error(errors.ERR_MENU_INPUT)
 
     def set_collaborator_to_controllers(self, collaborator):
         self.collaborator = collaborator
@@ -97,7 +97,7 @@ class MainController:
             case 6:
                 pass
             case _:
-                self.view.display_error(ERR_MENU_INPUT)
+                self.view.display_error(errors.ERR_MENU_INPUT)
 
     def process_commercial_action(self, menu_selection):
         match menu_selection:
@@ -118,11 +118,11 @@ class MainController:
             case 8:
                 pass
             case _:
-                self.view.display_error(ERR_MENU_INPUT)
+                self.view.display_error(errors.ERR_MENU_INPUT)
 
     def process_support_action(self, menu_selection):
         if menu_selection > 5:
-            self.view.display_error(ERR_MENU_INPUT)
+            self.view.display_error(errors.ERR_MENU_INPUT)
             return
 
     def process_admin_action(self, menu_selection):
@@ -136,4 +136,4 @@ class MainController:
             case 4:
                 self.collaborator_controller.create_collaborator()
             case _:
-                self.view.display_error(ERR_MENU_INPUT)
+                self.view.display_error(errors.ERR_MENU_INPUT)

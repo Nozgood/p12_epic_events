@@ -4,3 +4,4 @@ env/
 models/__pycache__/
 controllers/__pycache__/
 __pycache__/
+.DS_Store

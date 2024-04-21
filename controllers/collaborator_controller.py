@@ -1,6 +1,7 @@
 import models
 import bcrypt
-import utils
+import errors
+import validators
 
 
 class CollaboratorController:
@@ -16,9 +17,9 @@ class CollaboratorController:
                         filter_by(email=email).first()
                         )
         if collaborator is None:
-            raise ValueError(utils.ERR_COLLABORATOR_NOT_FOUND)
+            raise ValueError(errors.ERR_COLLABORATOR_NOT_FOUND)
         if self.is_password_correct(password, collaborator.password) is False:
-            raise ValueError(utils.ERR_COLLABORATOR_NOT_FOUND)
+            raise ValueError(errors.ERR_COLLABORATOR_NOT_FOUND)
         self.collaborator = collaborator
         return collaborator
 
@@ -40,22 +41,44 @@ class CollaboratorController:
             case 3:
                 self.delete_collaborator()
             case _:
-                self.view.display_error(utils.ERR_MENU_INPUT)
+                self.view.display_error(errors.ERR_MENU_INPUT)
         return
 
+    def set_new_collaborator_email(self):
+        email = ""
+        while email == "":
+            try:
+                email_input = self.view.input_email()
+                validators.validate_email(email_input)
+                self.is_email_in_database(email_input)
+                email = email_input
+                continue
+            except ValueError as err:
+                self.view.display_error(err)
+                continue
+        return email
+
+    def set_new_collaborator_password(self):
+        password = ""
+        while password == "":
+            try:
+                password_input = self.view.input_password()
+                validators.validate_password(password_input)
+                password = password_input
+                continue
+            except ValueError as err:
+                self.view.display_error(err)
+                continue
+        return password
+
     def create_collaborator(self):
-        email = self.view.input_email()
-        if self.is_email_in_database(email):
-            self.view.display_error(utils.ERR_EMAIL_ALREADY_EXISTS)
-            return
-        new_collaborator_input = self.view.input_new_collaborator()
-        new_collaborator_input["email"] = email
+        self.view.display_new_collaborator_panel()
         new_collaborator = models.Collaborator(
-            first_name=new_collaborator_input["first_name"],
-            last_name=new_collaborator_input["last_name"],
-            email=new_collaborator_input["email"],
-            password=new_collaborator_input["password"],
-            role=new_collaborator_input["role"]
+            email=self.set_new_collaborator_email(),
+            password=self.set_new_collaborator_password(),
+            role=self.view.input_collaborator_role(),
+            first_name=self.view.input_first_name(),
+            last_name=self.view.input_last_name(),
         )
         self.session.add(new_collaborator)
         try:
@@ -98,9 +121,16 @@ class CollaboratorController:
             first()
         )
         if collaborator is None:
-            raise ValueError(utils.ERR_COLLABORATOR_NOT_FOUND)
+            raise ValueError(errors.ERR_COLLABORATOR_NOT_FOUND)
         return collaborator
 
     def is_email_in_database(self, email):
-        return (self.session.query(models.Collaborator).
-                filter_by(email=email).first() is not None)
+        if (
+            self.
+            session.
+            query(models.Collaborator).
+            filter_by(email=email).
+            first()
+            is not None
+        ):
+            raise ValueError(errors.ERR_EMAIL_ALREADY_EXISTS)

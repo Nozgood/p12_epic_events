@@ -2,7 +2,7 @@ from unittest import TestCase
 from unittest.mock import patch, MagicMock
 import models
 from tests.conftest import create_mock_collaborator_controller
-import utils
+import errors
 
 
 class CollaboratorControllerLogin(TestCase):
@@ -26,7 +26,7 @@ class CollaboratorControllerLogin(TestCase):
             self.controller.login()
             self.assertEqual(
                 str(error.exception),
-                utils.ERR_COLLABORATOR_NOT_FOUND
+                errors.ERR_COLLABORATOR_NOT_FOUND
             )
 
     def test_login_not_correct_password(self):
@@ -54,7 +54,7 @@ class CollaboratorControllerLogin(TestCase):
             self.controller.login()
             self.assertEqual(
                 str(error.exception),
-                utils.ERR_COLLABORATOR_NOT_FOUND
+                errors.ERR_COLLABORATOR_NOT_FOUND
             )
 
     def test_login_normal_behavior(self):
@@ -161,7 +161,7 @@ class TestCollaboratorControllerCRUD(TestCase):
 
         with self.assertRaises(ValueError) as err:
             self.controller.get_collaborator()
-        self.assertEqual(str(err.exception), utils.ERR_COLLABORATOR_NOT_FOUND)
+        self.assertEqual(str(err.exception), errors.ERR_COLLABORATOR_NOT_FOUND)
 
     def test_get_collaborator_normal_behavior(self):
         expected = models.Collaborator(
