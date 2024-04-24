@@ -110,7 +110,7 @@ class MainController:
             case 4:
                 self.customer_controller.create_customer()
             case 5:
-                pass
+                self.customer_controller.update_customer()
             case 6:
                 pass
             case 7:
@@ -130,9 +130,9 @@ class MainController:
             case 1:
                 pass
             case 2:
-                pass
+                self.customer_controller.update_customer()
             case 3:
-                pass
+                self.customer_controller.create_customer()
             case 4:
                 self.collaborator_controller.create_collaborator()
             case _:

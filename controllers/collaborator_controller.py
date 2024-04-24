@@ -73,18 +73,13 @@ class CollaboratorController:
 
     def create_collaborator(self):
         self.view.display_new_collaborator_panel()
-        new_collaborator = None
-        try:
-            new_collaborator = models.Collaborator(
+        new_collaborator = models.Collaborator(
                 email=self.set_new_collaborator_email(),
                 password=self.set_new_collaborator_password(),
                 role=self.view.input_collaborator_role(),
                 first_name=self.view.input_first_name(),
                 last_name=self.view.input_last_name(),
             )
-        except ValueError as err:
-            print("ouhoh")
-            self.view.display_error(err)
         try:
             self.session.add(new_collaborator)
             self.session.commit()
@@ -103,9 +98,9 @@ class CollaboratorController:
             collaborator.last_name = update_collaborator_input["last_name"]
             collaborator.role = update_collaborator_input["role"]
             self.session.commit()
-            return self.view.display_update_collaborator_validation()
-        except ValueError:
-            return
+            return self.view.display_update_customer_validation()
+        except ValueError as err:
+            return self.view.display_error(err)
 
     def delete_collaborator(self):
         try:

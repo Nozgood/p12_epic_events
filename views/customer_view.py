@@ -1,3 +1,4 @@
+import models
 import views
 from rich.panel import Panel
 from datetime import datetime
@@ -24,10 +25,10 @@ class CustomerView(views.BaseView):
         self.console.print("corporation:", style="input")
         return input()
 
-    def input_new_customer(self):
+    def input_customer_information(self):
         self.console.print(
             Panel(
-                "--- New Customer Management ---",
+                "---Customer Management ---",
                 expand=True
             ),
             style="panel",
@@ -35,15 +36,11 @@ class CustomerView(views.BaseView):
         )
         fist_name = self.input_first_name()
         last_name = self.input_last_name()
-        email = self.input_email()
-        phone_number = self.input_phone_number()
         corporation = self.input_corporation()
 
         return {
             "first_name": fist_name,
             "last_name": last_name,
-            "email": email,
-            "phone_number": phone_number,
             "corporation": corporation
         }
 
@@ -52,3 +49,33 @@ class CustomerView(views.BaseView):
             "New collaborator correctly created",
             style="success"
         )
+
+    def display_customer_information(self, customer: models.Customer):
+        return self.console.print(
+            f"[input]First Name[/]: {customer.first_name} \n"
+            f"[input]Last Name[/]: {customer.last_name} \n"
+            f"[input]Phone[/]: {customer.phone} \n"
+            f"[input]Email[/]: {customer.email} \n"
+            f"[input]Corporation[/]: {customer.corporation} \n"
+        )
+
+    def input_update_customer(self):
+        self.console.print(
+            Panel(
+                "--- Update Customer Management ---",
+                expand=True
+            ),
+            style="panel",
+            justify="center"
+        )
+        first_name = self.input_first_name()
+        last_name = self.input_last_name()
+        phone = self.input_phone_number()
+        return {
+            "first_name": first_name,
+            "last_name": last_name,
+            "phone": phone
+        }
+
+    def display_update_customer_validation(self):
+        self.console.print("Customer successfully updated", style="success")

@@ -89,7 +89,14 @@ class CollaboratorView(views.BaseView):
         }
 
     def input_update_collaborator(self):
-        self.console.print("--- Update Collaborator Management ---")
+        self.console.print(
+            Panel(
+                "--- Update Collaborator Management ---",
+                expand=True
+            ),
+            style="panel",
+            justify="center"
+        )
         email = self.input_email()
         first_name = self.input_first_name()
         last_name = self.input_last_name()
@@ -103,10 +110,10 @@ class CollaboratorView(views.BaseView):
 
     def display_collaborator_information(self, collaborator):
         self.console.print(
-            f"First Name: {collaborator.first_name} \n"
-            f"Last Name: {collaborator.last_name} \n"
-            f"Role: {collaborator.role} \n"
-            f"Email: {collaborator.email} \n"
+            f"[input]First Name[/]: {collaborator.first_name} \n"
+            f"[input]Last Name[/]: {collaborator.last_name} \n"
+            f"[input]Role[/]: {collaborator.role} \n"
+            f"[input]Email[/]: {collaborator.email} \n"
         )
 
     def display_update_collaborator_validation(self):

@@ -58,9 +58,10 @@ class Collaborator(Base):
         self.email = email
         self.password = hashed_password
 
-    def __repr__(self):
+    def __str__(self):
         return (
             f"Email: {self.email} " 
             f"Role: {self.role} "  
-            f"Name: {self.first_name} {self.last_name} "
+            f"First Name: {self.first_name} "
+            f"Last Name: {self.last_name} "
         )
