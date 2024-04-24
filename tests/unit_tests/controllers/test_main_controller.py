@@ -22,12 +22,12 @@ class MainControllerRun(TestCase):
             errors.ERR_COLLABORATOR_NOT_FOUND
         )
         with (
-            patch.object(self.controller, "get_collaborator_menu")
-            as mock_get_collaborator_menu
+            patch.object(self.controller, "get_collaborator_main_menu")
+            as mock_get_collaborator_main_menu
         ):
             self.controller.run()
             self.controller.view.display_error.assert_called_once()
-            mock_get_collaborator_menu.assert_not_called()
+            mock_get_collaborator_main_menu.assert_not_called()
             self.controller.view.input_welcome.assert_called_once()
 
     def test_run_login_no_error(self):
@@ -44,14 +44,14 @@ class MainControllerRun(TestCase):
         )
 
         with (
-            patch.object(self.controller, "get_collaborator_menu")
-            as mock_get_collaborator_menu
+            patch.object(self.controller, "get_collaborator_main_menu")
+            as mock_get_collaborator_main_menu
         ):
             self.controller.run()
             self.controller.view.input_welcome.assert_called_once()
             assert self.controller.collaborator is not None
             assert self.controller.view.input_welcome_user()
-            mock_get_collaborator_menu.assert_called_once()
+            mock_get_collaborator_main_menu.assert_called_once()
 
 
 class MainControllerCollaboratorMenu(TestCase):

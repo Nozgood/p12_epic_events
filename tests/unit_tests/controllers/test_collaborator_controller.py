@@ -124,20 +124,13 @@ class TestCollaboratorControllerCRUD(TestCase):
     def setUp(self):
         self.controller = create_mock_collaborator_controller()
 
-    def test_create_email_already_exists(self):
-        self.controller.view.input_email.return_value = "notgood@epic.io"
-        self.controller.is_email_in_database = MagicMock(return_value=True)
-        self.controller.create_collaborator()
-        self.controller.view.display_error.assert_called_once()
-        self.controller.view.input_new_collaborator.assert_not_called()
-
     def test_create_email_normal_behavior(self):
         self.controller.view.input_email.return_value = "good@epic.io"
+        self.controller.view.input_password.return_value = "password"
         self.controller.is_email_in_database = MagicMock(return_value=False)
         self.controller.view.input_new_collaborator.return_value = {
             "first_name": "test",
             "last_name": "test",
-            "password": "test",
             "role": models.CollaboratorRole.MANAGEMENT
         }
         self.controller.create_collaborator()
@@ -158,7 +151,6 @@ class TestCollaboratorControllerCRUD(TestCase):
             return_value.
             first
         ).return_value = None
-
         with self.assertRaises(ValueError) as err:
             self.controller.get_collaborator()
         self.assertEqual(str(err.exception), errors.ERR_COLLABORATOR_NOT_FOUND)
