@@ -57,6 +57,8 @@ class CustomerView(views.BaseView):
             f"[input]Phone[/]: {customer.phone} \n"
             f"[input]Email[/]: {customer.email} \n"
             f"[input]Corporation[/]: {customer.corporation} \n"
+            f"[input]Contact[/]: "
+            f"{customer.contact.first_name} {customer.contact.last_name} \n"
             "--------------- \n"
         )
 
