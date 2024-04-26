@@ -4,6 +4,7 @@ import validators
 import views
 from datetime import datetime
 
+
 class CustomerController:
     def __init__(self, session, view: views.CustomerView, collaborator=None):
         self.session = session
@@ -51,11 +52,13 @@ class CustomerController:
             self.
             session.
             query(models.Customer).
-            filter_by(email=email, contact_id=collaborator.id).
+            filter_by(
+                email=email,
+                contact_id=collaborator.id).
             first()
         )
         if customer is None:
-            raise ValueError(errors.ERR_COLLABORATOR_NOT_FOUND)
+            raise ValueError(errors.ERR_CUSTOMER_NOT_FOUND)
         return customer
 
     def set_new_customer_email(self):
@@ -76,7 +79,7 @@ class CustomerController:
         phone = ""
         while phone == "":
             try:
-                phone_input= self.view.input_phone_number()
+                phone_input = self.view.input_phone_number()
                 validators.validate_phone(phone_input)
                 phone = phone_input
                 continue
@@ -84,6 +87,11 @@ class CustomerController:
                 self.view.display_error(err)
                 continue
         return phone
+
+    def list_customers(self):
+        customers = self.session.query(models.Customer).all()
+        for customer in customers:
+            self.view.display_customer_information(customer)
 
     def is_email_in_database(self, email):
         if (

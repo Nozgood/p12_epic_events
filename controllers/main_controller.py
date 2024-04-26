@@ -85,7 +85,7 @@ class MainController:
     def process_management_action(self, menu_selection):
         match menu_selection:
             case 1:
-                pass
+                self.customer_controller.list_customers()
             case 2:
                 pass
             case 3:
@@ -102,7 +102,7 @@ class MainController:
     def process_commercial_action(self, menu_selection):
         match menu_selection:
             case 1:
-                pass
+                self.customer_controller.list_customers()
             case 2:
                 pass
             case 3:
