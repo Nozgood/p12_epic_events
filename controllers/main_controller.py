@@ -87,7 +87,7 @@ class MainController:
             case 1:
                 self.customer_controller.list_customers()
             case 2:
-                pass
+                self.deal_controller.list_deals()
             case 3:
                 pass
             case 4:
@@ -108,7 +108,7 @@ class MainController:
             case 1:
                 self.customer_controller.list_customers()
             case 2:
-                pass
+                self.deal_controller.list_deals()
             case 3:
                 pass
             case 4:

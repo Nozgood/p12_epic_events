@@ -28,3 +28,8 @@ class DealController:
         self.session.add(deal)
         self.session.commit()
         return self.view.display_new_deal_validation()
+
+    def list_deals(self):
+        deals = self.session.query(models.Deal).all()
+        for deal in deals:
+            self.view.display_deal_informations(deal)

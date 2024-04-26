@@ -1,3 +1,4 @@
+import models
 import views
 import errors
 
@@ -47,6 +48,15 @@ class DealView(views.BaseView):
             "bill": bill_input,
             "has_been_signed": has_been_signed_input
         }
+
+    def display_deal_informations(self, deal: models.Deal):
+        return self.console.print(
+            f"[input]Customer[/]: {deal.customer.first_name} {deal.customer.last_name} \n"
+            f"[input]Contact[/]: {deal.contact.first_name} {deal.contact.last_name} \n"
+            f"[input]Has Been signed[/]: {deal.has_been_signed} \n"
+            f"[input]Remaining on Bill[/]: {deal.remaining_on_bill} \n"
+            f"[input]Created at[/]: {deal.created_at} \n"
+        )
 
     def display_new_deal_validation(self):
         return self.console.print("Deal successfully created", style="success")
