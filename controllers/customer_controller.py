@@ -46,20 +46,29 @@ class CustomerController:
         except ValueError as err:
             return self.view.display_error(err)
 
-    def get_customer(self, collaborator: models.Collaborator):
+    def get_customer(self, collaborator: models.Collaborator = None):
         email = self.view.input_email()
+        filters = {
+            "email": email
+        }
+        if collaborator is not None:
+            filters["contact_id"] = collaborator.id
+
         customer = (
             self.
             session.
             query(models.Customer).
-            filter_by(
-                email=email,
-                contact_id=collaborator.id).
+            filter_by(**filters).
             first()
         )
         if customer is None:
             raise ValueError(errors.ERR_CUSTOMER_NOT_FOUND)
         return customer
+
+    def list_customers(self):
+        customers = self.session.query(models.Customer).all()
+        for customer in customers:
+            self.view.display_customer_information(customer)
 
     def set_new_customer_email(self):
         email = ""
@@ -88,18 +97,13 @@ class CustomerController:
                 continue
         return phone
 
-    def list_customers(self):
-        customers = self.session.query(models.Customer).all()
-        for customer in customers:
-            self.view.display_customer_information(customer)
-
     def is_email_in_database(self, email):
         if (
-            self.
-            session.
-            query(models.Collaborator).
-            filter_by(email=email).
-            first()
-            is not None
+                self.
+                        session.
+                        query(models.Collaborator).
+                        filter_by(email=email).
+                        first()
+                is not None
         ):
             raise ValueError(errors.ERR_EMAIL_ALREADY_EXISTS)

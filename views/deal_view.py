@@ -1,5 +1,52 @@
 import views
+import errors
 
 
 class DealView(views.BaseView):
-    pass
+
+    def input_deal_management(self):
+        self.console.print("[menu_selection]0[/] - Exit")
+        self.console.print("[menu_selection]1[/] - Create a new Deal")
+        self.console.print("[menu_selection]2[/] - Update a Deal")
+        selection = -1
+        while selection < 0 or selection > 2:
+            try:
+                self.console.print("Select an action:", style="input")
+                selection = int(input())
+                if selection > 2 or selection < 0:
+                    raise ValueError
+            except ValueError:
+                self.console.print(errors.ERR_MENU_INPUT)
+        return selection
+
+    def input_deal_amount(self):
+        self.console.print("Deal amount:", style="input")
+        return input()
+
+    def input_deal_signed(self):
+        self.console.print(
+            "Deal already signed ? (-0- if NO / -1- if YES)",
+            style="input"
+        )
+        int_signed = -1
+        while int_signed == -1:
+            user_input = input()
+            if user_input != "0" and user_input != "1":
+                self.display_error(errors.ERR_MENU_INPUT)
+                continue
+            int_signed = user_input
+            continue
+        if int_signed == "0":
+            return False
+        return True
+
+    def input_new_deal(self):
+        bill_input = self.input_deal_amount()
+        has_been_signed_input = self.input_deal_signed()
+        return {
+            "bill": bill_input,
+            "has_been_signed": has_been_signed_input
+        }
+
+    def display_new_deal_validation(self):
+        return self.console.print("Deal successfully created", style="success")

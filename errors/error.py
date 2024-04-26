@@ -2,7 +2,7 @@ ERR_COLLABORATOR_NOT_FOUND = (
     "Collaborator not found, email or password incorrect"
 )
 ERR_CUSTOMER_NOT_FOUND = (
-    "Customer not found, email or password incorrect"
+    "Customer not found"
 )
 ERR_MENU_INPUT = "Not valid menu selection"
 ERR_NOT_DIGIT_VALUE = "Enter a digit value"

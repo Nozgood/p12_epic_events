@@ -1,7 +1,7 @@
 import models
 import views
 from rich.panel import Panel
-from datetime import datetime
+
 
 class CustomerView(views.BaseView):
 
@@ -14,7 +14,7 @@ class CustomerView(views.BaseView):
         return input()
 
     def input_email(self):
-        self.console.print("email:", style="input")
+        self.console.print("email of the customer:", style="input")
         return input()
 
     def input_phone_number(self):

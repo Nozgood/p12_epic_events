@@ -95,7 +95,11 @@ class MainController:
             case 5:
                 self.collaborator_controller.manage_collaborators()
             case 6:
-                pass
+                try:
+                    customer_to_manage = self.customer_controller.get_customer()
+                    self.deal_controller.manage_deals(customer_to_manage)
+                except ValueError as err:
+                    self.view.display_error(err)
             case _:
                 self.view.display_error(errors.ERR_MENU_INPUT)
 
