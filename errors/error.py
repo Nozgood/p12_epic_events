@@ -17,3 +17,4 @@ ERR_NOT_VALID_PASSWORD = "Not a valid password"
 ERR_NEW_REMAINING_BILL_TO_BIG = (
     "Remaining on bill cannot be bigger than the bill"
 )
+ERR_DEAL_NOTHING_TO_UPDATE  = "Nothing to update on this deal"

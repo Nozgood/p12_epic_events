@@ -35,6 +35,14 @@ class DealController:
             deal_to_manage = self.get_deal(customer)
             self.view.display_deal_informations(deal_to_manage)
 
+            if (
+                    deal_to_manage.has_been_signed and
+                    deal_to_manage.remaining_on_bill == 0
+            ):
+                return self.view.display_error(
+                    errors.ERR_DEAL_NOTHING_TO_UPDATE
+                )
+
             if not deal_to_manage.has_been_signed:
                 deal_to_manage.has_been_signed = self.view.input_deal_signed()
 
