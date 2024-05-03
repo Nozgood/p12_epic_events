@@ -1,9 +1,24 @@
+import uuid
+
 from sqlalchemy.orm import relationship
 from sqlalchemy import Column, Integer, String, ForeignKey, UUID, DateTime
 from models.base import Base
 
 
 class Event(Base):
+    def __init__(self, name, start_date, end_date, location, attendees, notes, collaborator, customer, deal):
+        self.id = uuid.uuid4()
+        self.name = name
+        self.start_date = start_date
+        self.end_date = end_date
+        self.location = location
+        self.attendees = attendees
+        self.notes = notes
+
+        self.contact = collaborator
+        self.customer = customer
+        self.deal = deal
+
     __tablename__ = 'events'
     id = Column(UUID, primary_key=True, index=True)
     name = Column(String(50), unique=True, index=True)
