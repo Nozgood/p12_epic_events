@@ -3,6 +3,7 @@ import models
 import views
 from datetime import datetime
 
+
 class DealController:
     def __init__(self, session, view: views.DealView, collaborator=None):
         self.session = session

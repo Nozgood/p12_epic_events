@@ -46,7 +46,7 @@ class CustomerView(views.BaseView):
 
     def display_new_customer_validation(self):
         return self.console.print(
-            "New collaborator correctly created",
+            "New customer correctly created",
             style="success"
         )
 

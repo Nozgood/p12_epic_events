@@ -116,7 +116,14 @@ class MainController:
             case 5:
                 self.customer_controller.update_customer()
             case 6:
-                self.deal_controller.manage_deal_for_customers()
+                try:
+                    customer_to_manage = self.customer_controller.get_customer(
+                        self.collaborator
+                    )
+                    self.deal_controller.update_deal(customer_to_manage)
+                except ValueError as err:
+                    return self.view.display_error(err)
+
             case 7:
                 pass
             case 8:
