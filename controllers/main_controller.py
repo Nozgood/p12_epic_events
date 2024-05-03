@@ -116,7 +116,7 @@ class MainController:
             case 5:
                 self.customer_controller.update_customer()
             case 6:
-                pass
+                self.deal_controller.manage_deal_for_customers()
             case 7:
                 pass
             case 8:

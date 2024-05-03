@@ -1,6 +1,7 @@
+import errors
 import models
 import views
-
+from datetime import datetime
 
 class DealController:
     def __init__(self, session, view: views.DealView, collaborator=None):
@@ -13,7 +14,7 @@ class DealController:
         if menu_selection == 1:
             return self.create_deal(customer)
         if menu_selection == 2:
-            pass
+            return self.update_deal(customer)
         return
 
     def create_deal(self, customer: models.Customer):
@@ -28,6 +29,42 @@ class DealController:
         self.session.add(deal)
         self.session.commit()
         return self.view.display_new_deal_validation()
+
+    def update_deal(self, customer: models.Customer):
+        try:
+            deal_to_manage = self.get_deal(customer)
+            self.view.display_deal_informations(deal_to_manage)
+
+            if not deal_to_manage.has_been_signed:
+                deal_to_manage.has_been_signed = self.view.input_deal_signed()
+
+            if deal_to_manage.remaining_on_bill > 0:
+                deal_to_manage.remaining_on_bill = (
+                    self.
+                    view.
+                    input_deal_remaining_amount(
+                        deal_to_manage.remaining_on_bill,
+                        deal_to_manage.bill
+                    )
+                )
+            deal_to_manage.updated_at = datetime.now()
+
+            self.session.commit()
+            return self.view.display_update_deal_validation()
+        except ValueError as err:
+            return self.view.display_error(err)
+
+    def get_deal(self, customer: models.Customer) -> models.Deal:
+        deal = (
+            self.
+            session.
+            query(models.Deal).
+            filter_by(customer=customer).
+            first()
+        )
+        if deal is None:
+            raise ValueError(errors.ERR_DEAL_NOT_FOUND)
+        return deal
 
     def list_deals(self):
         deals = self.session.query(models.Deal).all()

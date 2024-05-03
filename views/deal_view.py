@@ -24,6 +24,32 @@ class DealView(views.BaseView):
         self.console.print("Deal amount:", style="input")
         return input()
 
+    def input_deal_remaining_amount(self, remaining_on_bill, bill):
+        self.console.print(
+            f"remaining on bill: {remaining_on_bill}",
+            style="menu_text"
+        )
+        self.console.print(
+            "Insert the new amount remaining to be paid",
+            style="input"
+        )
+        new_remaining_on_bill = ""
+        while new_remaining_on_bill == "":
+            try:
+                new_remaining_on_bill = int(input())
+                if new_remaining_on_bill > bill:
+                    self.display_error(errors.ERR_NEW_REMAINING_BILL_TO_BIG)
+                    new_remaining_on_bill = ""
+                    continue
+                continue
+            except ValueError:
+                self.display_error(errors.ERR_NOT_DIGIT_VALUE)
+                continue
+        return new_remaining_on_bill
+
+
+
+
     def input_deal_signed(self):
         self.console.print(
             "Deal already signed ? (-0- if NO / -1- if YES)",
@@ -60,3 +86,6 @@ class DealView(views.BaseView):
 
     def display_new_deal_validation(self):
         return self.console.print("Deal successfully created", style="success")
+
+    def display_update_deal_validation(self):
+        return self.console.print("Deal successfully updated", style="success")
