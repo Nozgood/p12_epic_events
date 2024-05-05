@@ -26,10 +26,10 @@ class CustomerController:
         self.session.add(new_customer)
         try:
             self.session.commit()
+            return self.view.display_new_customer_validation()
         except Exception as err:
-            self.view.display_error(err)
-            return
-        return self.view.display_new_customer_validation()
+            self.session.rollback()
+            return self.view.display_error(err)
 
     def update_customer(self):
         try:

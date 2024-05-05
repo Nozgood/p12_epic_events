@@ -26,3 +26,15 @@ def create_mock_collaborator_controller():
     )
     mock_collaborator_controller.view = MagicMock()
     return mock_collaborator_controller
+
+
+def create_mock_event_controller():
+    mock_session = MagicMock()
+    mock_view = MagicMock()
+
+    mock_event_controller = controllers.EventController(
+        session=mock_session,
+        view=mock_view
+    )
+    mock_event_controller.view = MagicMock()
+    return mock_event_controller

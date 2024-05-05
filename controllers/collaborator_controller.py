@@ -83,10 +83,10 @@ class CollaboratorController:
         try:
             self.session.add(new_collaborator)
             self.session.commit()
+            return self.view.display_new_collaborator_validation()
         except Exception as err:
-            self.view.display_error(err)
-            return
-        return self.view.display_new_collaborator_validation()
+            self.session.rollback()
+            return self.view.display_error(err)
 
     def update_collaborator(self):
         try:

@@ -6,7 +6,17 @@ from models.base import Base
 
 
 class Event(Base):
-    def __init__(self, name, start_date, end_date, location, attendees, notes, collaborator, customer, deal):
+    def __init__(
+            self,
+            name,
+            start_date,
+            end_date,
+            location,
+            attendees,
+            notes,
+            customer,
+            deal
+    ):
         self.id = uuid.uuid4()
         self.name = name
         self.start_date = start_date
@@ -15,7 +25,6 @@ class Event(Base):
         self.attendees = attendees
         self.notes = notes
 
-        self.contact = collaborator
         self.customer = customer
         self.deal = deal
 

@@ -54,8 +54,10 @@ class CollaboratorView(views.BaseView):
 
     def display_commercial_menu(self):
         self.console.print("[menu_selection]4[/] - Create a new Customer")
-        self.console.print("[menu_selection]5[/] - Manage your Customers")
-        self.console.print("[menu_selection]6[/] - Manage your Customers Deals")
+        self.console.print(
+            "[menu_selection]5[/] - Update your Customer information"
+        )
+        self.console.print("[menu_selection]6[/] - Update your Customer Deal")
         self.console.print("[menu_selection]7[/] - Filter and Display Deals")
         self.console.print(
             "[menu_selection]8[/] - Create an Event for a Customer"

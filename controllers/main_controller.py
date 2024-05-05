@@ -40,7 +40,6 @@ class MainController:
                 case 0:
                     running = False
                 case 1:
-                    collaborator = None
                     try:
                         collaborator = self.collaborator_controller.login()
                     except ValueError as err:
@@ -112,7 +111,7 @@ class MainController:
             case 3:
                 pass
             case 4:
-                self.customer_controller.create_customer()
+                return self.customer_controller.create_customer()
             case 5:
                 self.customer_controller.update_customer()
             case 6:
@@ -127,7 +126,18 @@ class MainController:
             case 7:
                 pass
             case 8:
-                pass
+                try:
+                    customer_to_manage = self.customer_controller.get_customer(
+                        self.collaborator
+                    )
+                    deal_to_manage = self.deal_controller.get_deal(
+                        customer_to_manage)
+                    return self.event_controller.create_event(
+                        customer_to_manage,
+                        deal_to_manage
+                    )
+                except ValueError as err:
+                    return self.view.display_error(err)
             case _:
                 self.view.display_error(errors.ERR_MENU_INPUT)
 

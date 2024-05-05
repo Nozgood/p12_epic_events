@@ -18,7 +18,7 @@ class CustomerView(views.BaseView):
         return input()
 
     def input_phone_number(self):
-        self.console.print("phone number:", style="input")
+        self.console.print("phone number: (must start with +33)", style="input")
         return input()
 
     def input_corporation(self):
