@@ -1,13 +1,9 @@
 ERR_COLLABORATOR_NOT_FOUND = (
-    "Collaborator not found, email or password incorrect"
+    "Collaborator not found"
 )
-ERR_CUSTOMER_NOT_FOUND = (
-    "Customer not found"
-)
-ERR_DEAL_NOT_FOUND = (
-    "Deal not found for this customer"
-)
-
+ERR_CUSTOMER_NOT_FOUND = "Customer not found"
+ERR_DEAL_NOT_FOUND = "Deal not found"
+ERR_EVENT_NOT_FOUND = "Event not found"
 ERR_MENU_INPUT = "Not valid menu selection"
 ERR_NOT_DIGIT_VALUE = "Enter a digit value"
 ERR_NOT_POSITIVE_VALUE = "You must fill a positive value"
@@ -22,3 +18,5 @@ ERR_DEAL_NOTHING_TO_UPDATE = "Nothing to update on this deal"
 ERR_NOT_VALID_DATE = (
     "The date you provided is not valid, please follow the DD-MM-YYYY format"
 )
+ERR_NOT_VALID_PERIOD = "start_date must be before end_date"
+ERR_NOT_SUPPORT_COLLABORATOR = "This collaborator is not a support"

@@ -84,13 +84,30 @@ class MainController:
     def process_management_action(self, menu_selection):
         match menu_selection:
             case 1:
-                self.customer_controller.list_customers()
+                return self.customer_controller.list_customers()
             case 2:
-                self.deal_controller.list_deals()
+                return self.deal_controller.list_deals()
             case 3:
-                pass
+                return self.event_controller.list_events()
             case 4:
-                pass
+                try:
+                    support_collaborator = (
+                        self.
+                        collaborator_controller.
+                        get_collaborator()
+                    )
+                    if (
+                            support_collaborator.role !=
+                            models.CollaboratorRole.SUPPORT
+                    ):
+                        return self.view.display_error(
+                            errors.ERR_NOT_SUPPORT_COLLABORATOR
+                        )
+                    return self.event_controller.update_event(
+                        support_collaborator
+                    )
+                except ValueError as err:
+                    return self.view.display_error(err)
             case 5:
                 self.collaborator_controller.manage_collaborators()
             case 6:
@@ -109,7 +126,7 @@ class MainController:
             case 2:
                 self.deal_controller.list_deals()
             case 3:
-                pass
+                return self.event_controller.list_events()
             case 4:
                 return self.customer_controller.create_customer()
             case 5:
@@ -142,6 +159,20 @@ class MainController:
                 self.view.display_error(errors.ERR_MENU_INPUT)
 
     def process_support_action(self, menu_selection):
+        match menu_selection:
+            case 1:
+                return self.customer_controller.list_customers()
+            case 2:
+                return self.deal_controller.list_deals()
+            case 3:
+                return self.event_controller.list_events()
+            case 4:
+                print("not implemented")
+            case 5:
+                return self.event_controller.update_event(
+                    support_collaborator=None,
+                    assigned_support=self.collaborator
+                )
         if menu_selection > 5:
             self.view.display_error(errors.ERR_MENU_INPUT)
             return

@@ -1,9 +1,23 @@
 import errors
+import models
 import views
 from rich.panel import Panel
 
 
 class EventView(views.BaseView):
+
+    def display_event(self, event: models.Event):
+        return self.console.print(
+            f"[input]Name[/]: {event.name} \n"
+            f"[input]Start Date[/]: {event.start_date} \n"
+            f"[input]End Date[/]: {event.end_date} \n"
+            f"[input]Location[/]: {event.location} \n"
+            f"[input]Attendees[/]: {event.attendees} \n"
+            f"[input]Notes[/]: {event.notes} \n"
+            f"[input]Support[/]: {event.contact.email} \n"
+            f"[input]Customer[/]: {event.customer.email} \n"
+            "--------------- \n"
+        )
 
     def display_new_event_panel(self):
         return self.console.print(
@@ -66,3 +80,6 @@ class EventView(views.BaseView):
 
     def display_new_event_validation(self):
         return self.console.print("New event created", style="success")
+
+    def display_update_event_validation(self):
+        return self.console.print("Event correctly updated", style="success")

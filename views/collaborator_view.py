@@ -48,7 +48,9 @@ class CollaboratorView(views.BaseView):
         return self.input_menu_selection()
 
     def display_management_menu(self):
-        self.console.print("[menu_selection]4[/] - Manage Events")
+        self.console.print(
+            "[menu_selection]4[/] - Assign a support to an event"
+        )
         self.console.print("[menu_selection]5[/] - Manage Collaborators")
         self.console.print("[menu_selection]6[/] - Manage Deals")
 
