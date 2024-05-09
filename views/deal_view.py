@@ -1,6 +1,7 @@
 import models
 import views
 import errors
+from rich.panel import Panel
 
 
 class DealView(views.BaseView):
@@ -83,6 +84,25 @@ class DealView(views.BaseView):
             f"[input]Remaining on Bill[/]: {deal.remaining_on_bill} \n"
             f"[input]Created at[/]: {deal.created_at} \n"
         )
+
+    def input_list_deals_filters(self):
+        self.console.print("[input] -- List Deals Filters --")
+        self.console.print("[menu_selection]0[/] - No filters")
+        self.console.print("[menu_selection]1[/] - Deals not signed")
+        self.console.print("[menu_selection]2[/] - Deals not totally paid")
+        list_deal_filter = ""
+        while list_deal_filter == "":
+            try:
+                list_deal_filter = int(input())
+                if list_deal_filter < 0 or list_deal_filter > 2:
+                    list_deal_filter = ""
+                    self.display_error(errors.ERR_MENU_INPUT)
+                    continue
+                continue
+            except ValueError:
+                self.display_error(errors.ERR_NOT_DIGIT_VALUE)
+                continue
+        return list_deal_filter
 
     def display_new_deal_validation(self):
         return self.console.print("Deal successfully created", style="success")

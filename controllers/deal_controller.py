@@ -2,7 +2,7 @@ import errors
 import models
 import views
 from datetime import datetime
-
+from sqlalchemy import and_
 
 class DealController:
     def __init__(self, session, view: views.DealView, collaborator=None):
@@ -76,6 +76,14 @@ class DealController:
         return deal
 
     def list_deals(self):
-        deals = self.session.query(models.Deal).all()
+        filters_input = self.view.input_list_deals_filters()
+        filters = []
+        if filters_input == 1:
+            filters.append(models.Deal.has_been_signed == False)
+        if filters_input == 2:
+            filters.append(models.Deal.remaining_on_bill > 0)
+
+        deals = self.session.query(models.Deal).filter(and_(*filters)).all()
+
         for deal in deals:
             self.view.display_deal_informations(deal)

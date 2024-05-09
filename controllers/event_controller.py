@@ -3,6 +3,7 @@ import models
 import validators
 import views
 from datetime import datetime
+from sqlalchemy import and_
 
 
 class EventController:
@@ -73,11 +74,15 @@ class EventController:
         return event
 
     def list_events(self):
-        events = self.session.query(models.Event).all()
+        event_filters_input = self.view.input_list_events_filters()
+        filters = []
+        if event_filters_input == 1:
+            filters.append(models.Event.contact == self.collaborator)
+        if event_filters_input == 2:
+            filters.append(models.Event.contact_id == None)
+        events = self.session.query(models.Event).filter(and_(*filters)).all()
         for event in events:
             self.view.display_event(event)
-
-
 
     def set_new_event_date(self, is_start_date):
         date_format = "%d-%m-%y"

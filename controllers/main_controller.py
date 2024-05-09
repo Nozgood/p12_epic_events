@@ -139,10 +139,7 @@ class MainController:
                     self.deal_controller.update_deal(customer_to_manage)
                 except ValueError as err:
                     return self.view.display_error(err)
-
             case 7:
-                pass
-            case 8:
                 try:
                     customer_to_manage = self.customer_controller.get_customer(
                         self.collaborator
@@ -167,25 +164,9 @@ class MainController:
             case 3:
                 return self.event_controller.list_events()
             case 4:
-                print("not implemented")
-            case 5:
                 return self.event_controller.update_event(
                     support_collaborator=None,
                     assigned_support=self.collaborator
                 )
-        if menu_selection > 5:
-            self.view.display_error(errors.ERR_MENU_INPUT)
-            return
-
-    def process_admin_action(self, menu_selection):
-        match menu_selection:
-            case 1:
-                pass
-            case 2:
-                self.customer_controller.update_customer()
-            case 3:
-                self.customer_controller.create_customer()
-            case 4:
-                self.collaborator_controller.create_collaborator()
             case _:
                 self.view.display_error(errors.ERR_MENU_INPUT)

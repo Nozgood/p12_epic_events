@@ -31,9 +31,9 @@ class CollaboratorView(views.BaseView):
 
     def display_collaborator_menu(self, role: models.CollaboratorRole):
         self.console.print("[menu_selection]0[/] - Logout")
-        self.console.print("[menu_selection]1[/] - Display All Customers")
-        self.console.print("[menu_selection]2[/] - Display All Deals")
-        self.console.print("[menu_selection]3[/] - Display All Events")
+        self.console.print("[menu_selection]1[/] - List Customers")
+        self.console.print("[menu_selection]2[/] - List Deals")
+        self.console.print("[menu_selection]3[/] - List Events")
 
         match role:
             case models.CollaboratorRole.MANAGEMENT:
@@ -60,14 +60,12 @@ class CollaboratorView(views.BaseView):
             "[menu_selection]5[/] - Update your Customer information"
         )
         self.console.print("[menu_selection]6[/] - Update your Customer Deal")
-        self.console.print("[menu_selection]7[/] - Filter and Display Deals")
         self.console.print(
-            "[menu_selection]8[/] - Create an Event for a Customer"
+            "[menu_selection]7[/] - Create an Event for a Customer"
         )
 
     def display_support_menu(self):
-        self.console.print("[menu_selection]4[/] - Filter and display Events")
-        self.console.print("[menu_selection]5[/] - Manage your Events")
+        self.console.print("[menu_selection]4[/] - Manage your Events")
 
     def display_admin_menu(self):
         self.console.print("[menu_selection]4[/] - Create a collaborator")

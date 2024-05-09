@@ -7,17 +7,21 @@ from rich.panel import Panel
 class EventView(views.BaseView):
 
     def display_event(self, event: models.Event):
-        return self.console.print(
+        self.console.print(
             f"[input]Name[/]: {event.name} \n"
             f"[input]Start Date[/]: {event.start_date} \n"
             f"[input]End Date[/]: {event.end_date} \n"
             f"[input]Location[/]: {event.location} \n"
             f"[input]Attendees[/]: {event.attendees} \n"
             f"[input]Notes[/]: {event.notes} \n"
-            f"[input]Support[/]: {event.contact.email} \n"
-            f"[input]Customer[/]: {event.customer.email} \n"
-            "--------------- \n"
         )
+        if event.contact is not None:
+            self.console.print(f"[input]Support[/]: {event.contact.email}")
+
+        if event.customer is not None:
+            self.console.print(f"[input]Customer[/]: {event.customer.email} \n")
+    
+        self.console.print("--------------- \n")
 
     def display_new_event_panel(self):
         return self.console.print(
@@ -77,6 +81,28 @@ class EventView(views.BaseView):
             "attendees": event_attendees,
             "notes": event_notes
         }
+
+    def input_list_events_filters(self):
+        self.console.print("[input] -- List Events Filters --")
+        self.console.print("[menu_selection]0[/] - No filters")
+        self.console.print("[menu_selection]1[/] - Only the events you manage")
+        self.console.print(
+            "[menu_selection]2[/] - Display events that have no support"
+        )
+        list_event_filter = ""
+        while list_event_filter == "":
+            try:
+                list_event_filter = int(input())
+                if list_event_filter < 0 or list_event_filter > 2:
+                    list_event_filter = ""
+                    self.display_error(errors.ERR_MENU_INPUT)
+                    continue
+                continue
+            except ValueError:
+                self.display_error(errors.ERR_NOT_DIGIT_VALUE)
+                continue
+        return list_event_filter
+
 
     def display_new_event_validation(self):
         return self.console.print("New event created", style="success")
