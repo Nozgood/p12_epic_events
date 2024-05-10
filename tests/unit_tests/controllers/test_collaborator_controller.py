@@ -207,7 +207,6 @@ class TestCollaboratorControllerCRUD(TestCase):
             }
             self.controller.update_collaborator()
             self.controller.session.commit.assert_called_once()
-            self.controller.view.display_update_collaborator_validation.assert_called_once()
             (
                 self.
                 controller.
@@ -215,6 +214,7 @@ class TestCollaboratorControllerCRUD(TestCase):
                 display_collaborator_information.
                 assert_called_once()
             )
+            self.controller.view.display_update_collaborator_validation.assert_called_once()
 
     def test_delete_collaborator_error(self):
         with patch.object(

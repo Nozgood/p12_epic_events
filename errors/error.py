@@ -1,6 +1,9 @@
 ERR_COLLABORATOR_NOT_FOUND = (
     "Collaborator not found"
 )
+ERR_COLLABORATOR_NO_ROLE = (
+    "This collaborator has no role, he cannot interact with the application"
+)
 ERR_CUSTOMER_NOT_FOUND = "Customer not found"
 ERR_DEAL_NOT_FOUND = "Deal not found"
 ERR_EVENT_NOT_FOUND = "Event not found"

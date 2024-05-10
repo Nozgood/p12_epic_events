@@ -98,7 +98,7 @@ class CollaboratorController:
             collaborator.last_name = update_collaborator_input["last_name"]
             collaborator.role = update_collaborator_input["role"]
             self.session.commit()
-            return self.view.display_update_customer_validation()
+            return self.view.display_update_collaborator_validation()
         except ValueError as err:
             return self.view.display_error(err)
 

@@ -79,7 +79,9 @@ class MainController:
                 case models.CollaboratorRole.SUPPORT:
                     self.process_support_action(menu_selection)
                 case _:
-                    self.process_admin_action(menu_selection)
+                    self.view.display_error(errors.ERR_COLLABORATOR_NO_ROLE)
+                    running = False
+                    continue
 
     def process_management_action(self, menu_selection):
         match menu_selection:
@@ -90,34 +92,40 @@ class MainController:
             case 3:
                 return self.event_controller.list_events()
             case 4:
-                try:
-                    support_collaborator = (
-                        self.
-                        collaborator_controller.
-                        get_collaborator()
-                    )
-                    if (
-                            support_collaborator.role !=
-                            models.CollaboratorRole.SUPPORT
-                    ):
-                        return self.view.display_error(
-                            errors.ERR_NOT_SUPPORT_COLLABORATOR
-                        )
-                    return self.event_controller.update_event(
-                        support_collaborator
-                    )
-                except ValueError as err:
-                    return self.view.display_error(err)
+                return self.set_support_on_event()
             case 5:
-                self.collaborator_controller.manage_collaborators()
+                return self.collaborator_controller.manage_collaborators()
             case 6:
-                try:
-                    customer_to_manage = self.customer_controller.get_customer()
-                    self.deal_controller.manage_deals(customer_to_manage)
-                except ValueError as err:
-                    self.view.display_error(err)
+                return self.manage_deal_for_customer()
             case _:
                 self.view.display_error(errors.ERR_MENU_INPUT)
+
+    def manage_deal_for_customer(self):
+        try:
+            customer_to_manage = self.customer_controller.get_customer()
+            return self.deal_controller.manage_deals(customer_to_manage)
+        except ValueError as err:
+            return self.view.display_error(err)
+
+    def set_support_on_event(self):
+        try:
+            support_collaborator = (
+                self.
+                collaborator_controller.
+                get_collaborator()
+            )
+            if (
+                    support_collaborator.role !=
+                    models.CollaboratorRole.SUPPORT
+            ):
+                return self.view.display_error(
+                    errors.ERR_NOT_SUPPORT_COLLABORATOR
+                )
+            return self.event_controller.update_event(
+                support_collaborator
+            )
+        except ValueError as err:
+            return self.view.display_error(err)
 
     def process_commercial_action(self, menu_selection):
         match menu_selection:
@@ -132,28 +140,35 @@ class MainController:
             case 5:
                 self.customer_controller.update_customer()
             case 6:
-                try:
-                    customer_to_manage = self.customer_controller.get_customer(
-                        self.collaborator
-                    )
-                    self.deal_controller.update_deal(customer_to_manage)
-                except ValueError as err:
-                    return self.view.display_error(err)
+                return self.update_customer_deal_by_commercial()
             case 7:
-                try:
-                    customer_to_manage = self.customer_controller.get_customer(
-                        self.collaborator
-                    )
-                    deal_to_manage = self.deal_controller.get_deal(
-                        customer_to_manage)
-                    return self.event_controller.create_event(
-                        customer_to_manage,
-                        deal_to_manage
-                    )
-                except ValueError as err:
-                    return self.view.display_error(err)
+                return self.create_event_for_customer_by_commercial()
             case _:
                 self.view.display_error(errors.ERR_MENU_INPUT)
+
+    def create_event_for_customer_by_commercial(self):
+        try:
+            customer_to_manage = self.customer_controller.get_customer(
+                self.collaborator
+            )
+            deal_to_manage = self.deal_controller.get_deal(
+                customer_to_manage)
+            return self.event_controller.create_event(
+                customer_to_manage,
+                deal_to_manage
+            )
+        except ValueError as err:
+            return self.view.display_error(err)
+
+
+    def update_customer_deal_by_commercial(self):
+        try:
+            customer_to_manage = self.customer_controller.get_customer(
+                self.collaborator
+            )
+            self.deal_controller.update_deal(customer_to_manage)
+        except ValueError as err:
+            return self.view.display_error(err)
 
     def process_support_action(self, menu_selection):
         match menu_selection:
