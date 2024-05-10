@@ -2,7 +2,7 @@ from unittest.mock import MagicMock
 import controllers
 
 
-def create_mock_main_controller():
+def new_mock_main_controller():
     mock_session = MagicMock()
     mock_console = MagicMock()
     mock_collaborator_controller = MagicMock()
@@ -16,7 +16,7 @@ def create_mock_main_controller():
     return mock_main_controller
 
 
-def create_mock_collaborator_controller():
+def new_mock_collaborator_controller():
     mock_session = MagicMock()
     mock_view = MagicMock()
 
@@ -28,7 +28,31 @@ def create_mock_collaborator_controller():
     return mock_collaborator_controller
 
 
-def create_mock_event_controller():
+def new_mock_customer_controller():
+    mock_session = MagicMock()
+    mock_view = MagicMock()
+
+    mock_customer_controller = controllers.CustomerController(
+        session=mock_session,
+        view=mock_view
+    )
+
+    return mock_customer_controller
+
+
+def new_mock_deal_controller():
+    mock_session = MagicMock()
+    mock_view = MagicMock()
+
+    mock_deal_controller = controllers.DealController(
+        session=mock_session,
+        view=mock_view
+    )
+
+    return mock_deal_controller
+
+
+def new_mock_event_controller():
     mock_session = MagicMock()
     mock_view = MagicMock()
 

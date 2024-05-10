@@ -2,13 +2,13 @@ from unittest import TestCase
 from unittest.mock import patch
 import models
 import errors
-from tests.conftest import create_mock_main_controller
+from tests.conftest import new_mock_main_controller
 
 
 class MainControllerRun(TestCase):
 
     def setUp(self):
-        self.controller = create_mock_main_controller()
+        self.controller = new_mock_main_controller()
 
     def test_run_exit(self):
         self.controller.view.display_main_menu.return_value = 0
@@ -57,7 +57,7 @@ class MainControllerRun(TestCase):
 class MainControllerCollaboratorMenu(TestCase):
 
     def setUp(self):
-        self.controller = create_mock_main_controller()
+        self.controller = new_mock_main_controller()
         self.controller.collaborator = models.Collaborator(
                 first_name="test",
                 last_name="test",
@@ -156,7 +156,7 @@ class MainControllerCollaboratorMenu(TestCase):
 
 class TestMainControllerManagement(TestCase):
     def setUp(self):
-        self.controller = create_mock_main_controller()
+        self.controller = new_mock_main_controller()
         self.controller.collaborator = models.Collaborator(
                 first_name="test",
                 last_name="test",
@@ -186,7 +186,7 @@ class TestMainControllerManagement(TestCase):
 
 class TestMainControllerAdmin(TestCase):
     def setUp(self):
-        self.controller = create_mock_main_controller()
+        self.controller = new_mock_main_controller()
         self.controller.collaborator = models.Collaborator(
                 first_name="test",
                 last_name="test",

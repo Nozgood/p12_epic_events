@@ -1,13 +1,13 @@
 from unittest import TestCase
 from unittest.mock import patch, MagicMock
 import models
-from tests.conftest import create_mock_collaborator_controller
+from tests.conftest import new_mock_collaborator_controller
 import errors
 
 
 class CollaboratorControllerLogin(TestCase):
     def setUp(self):
-        self.controller = create_mock_collaborator_controller()
+        self.controller = new_mock_collaborator_controller()
 
     def test_login_collaborator_not_found(self):
         self.controller.view.input_email.return_value = "notgood@epic.io"
@@ -85,7 +85,7 @@ class CollaboratorControllerLogin(TestCase):
 
 class CollaboratorControllerManageCollaborators(TestCase):
     def setUp(self):
-        self.controller = create_mock_collaborator_controller()
+        self.controller = new_mock_collaborator_controller()
 
     def test_manage_collaborators_not_good_input(self):
         self.controller.view.input_collaborator_management.return_value = 4
@@ -122,7 +122,7 @@ class CollaboratorControllerManageCollaborators(TestCase):
 
 class TestCollaboratorControllerCRUD(TestCase):
     def setUp(self):
-        self.controller = create_mock_collaborator_controller()
+        self.controller = new_mock_collaborator_controller()
 
     def test_create_email_normal_behavior(self):
         self.controller.view.input_email.return_value = "good@epic.io"

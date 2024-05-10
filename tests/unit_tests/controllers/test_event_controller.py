@@ -1,7 +1,7 @@
 from unittest import TestCase
-from tests.conftest import create_mock_event_controller
+from tests.conftest import new_mock_event_controller
 
 
 class TestEventControllerSetDate(TestCase):
     def setUp(self):
-        self.controller = create_mock_event_controller()
+        self.controller = new_mock_event_controller()
