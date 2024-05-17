@@ -160,7 +160,6 @@ class MainController:
         except ValueError as err:
             return self.view.display_error(err)
 
-
     def update_customer_deal_by_commercial(self):
         try:
             customer_to_manage = self.customer_controller.get_customer(

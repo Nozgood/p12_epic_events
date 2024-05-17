@@ -135,7 +135,7 @@ class MainControllerCollaboratorMenu(TestCase):
             )
 
 
-class TestMainControllerManagement(TestCase):
+class TestProcessManagementAction(TestCase):
     def setUp(self):
         self.controller = new_mock_main_controller()
         self.controller.collaborator = models.Collaborator(
@@ -196,6 +196,108 @@ class TestMainControllerManagement(TestCase):
         (
             self.controller.view.display_error.assert_called_once()
         )
+
+
+class TestProcessCommercialAction(unittest.TestCase):
+    def setUp(self):
+        self.controller = new_mock_main_controller()
+        self.controller.collaborator = models.Collaborator(
+            first_name="test",
+            last_name="test",
+            password="test",
+            email="test@epic.io",
+            role=models.CollaboratorRole.MANAGEMENT
+        )
+
+    def test_list_customers(self):
+        menu_selection = 1
+        self.controller.process_commercial_action(menu_selection)
+        self.controller.customer_controller.list_customers.assert_called_once()
+        self.controller.view.display_error.assert_not_called()
+
+    def test_list_deals(self):
+        menu_selection = 2
+        self.controller.process_commercial_action(menu_selection)
+        self.controller.deal_controller.list_deals.assert_called_once()
+        self.controller.view.display_error.assert_not_called()
+
+    def test_list_events(self):
+        menu_selection = 3
+        self.controller.process_commercial_action(menu_selection)
+        self.controller.event_controller.list_events.assert_called_once()
+        self.controller.view.display_error.assert_not_called()
+
+    def test_create_customer(self):
+        menu_selection = 4
+        self.controller.process_commercial_action(menu_selection)
+        self.controller.customer_controller.create_customer.assert_called_once()
+        self.controller.view.display_error.assert_not_called()
+
+    def test_update_customer(self):
+        menu_selection = 5
+        self.controller.process_commercial_action(menu_selection)
+        self.controller.customer_controller.update_customer.assert_called_once()
+        self.controller.view.display_error.assert_not_called()
+
+    def test_update_deal_for_customer(self):
+        menu_selection = 6
+        with patch.object(
+            self.controller,
+            "update_customer_deal_by_commercial"
+        ) as mock_update_customer_deal_by_commercial:
+            self.controller.process_commercial_action(menu_selection)
+            mock_update_customer_deal_by_commercial.assert_called_once()
+            self.controller.view.display_error.assert_not_called()
+
+    def test_create_event_for_customer(self):
+        menu_selection = 7
+        with patch.object(
+            self.controller,
+            "create_event_for_customer_by_commercial"
+        ) as mock_create_event:
+            self.controller.process_commercial_action(menu_selection)
+            mock_create_event.assert_called_once()
+            self.controller.view.display_error.assert_not_called()
+
+    def test_not_valid_input(self):
+        menu_selection = 8
+        self.controller.process_commercial_action(menu_selection)
+        self.controller.view.display_error.assert_called_once()
+
+
+class TestProcessSupportAction(unittest.TestCase):
+    def setUp(self):
+        self.controller = new_mock_main_controller()
+        self.controller.collaborator = models.Collaborator(
+            first_name="test",
+            last_name="test",
+            password="test",
+            email="test@epic.io",
+            role=models.CollaboratorRole.MANAGEMENT
+        )
+
+    def test_list_customers(self):
+        menu_selection = 1
+        self.controller.process_support_action(menu_selection)
+        self.controller.customer_controller.list_customers.assert_called_once()
+        self.controller.view.display_error.assert_not_called()
+
+    def test_list_deals(self):
+        menu_selection = 2
+        self.controller.process_support_action(menu_selection)
+        self.controller.deal_controller.list_deals.assert_called_once()
+        self.controller.view.display_error.assert_not_called()
+
+    def test_list_events(self):
+        menu_selection = 3
+        self.controller.process_support_action(menu_selection)
+        self.controller.event_controller.list_events.assert_called_once()
+        self.controller.view.display_error.assert_not_called()
+
+    def test_update_event(self):
+        menu_selection = 4
+        self.controller.process_support_action(menu_selection)
+        self.controller.event_controller.update_event.assert_called_once()
 
 
 class TestManageDealForCustomer(unittest.TestCase):
@@ -272,7 +374,7 @@ class TestSetSupportOnEvent(unittest.TestCase):
         self.controller.view.display_error.assert_not_called()
 
 
-class TestProcessCommercialAction(unittest.TestCase):
+class TestCreateEventForCustomerByCommercial(unittest.TestCase):
     def setUp(self):
         self.controller = new_mock_main_controller()
         self.controller.collaborator = models.Collaborator(
@@ -283,52 +385,81 @@ class TestProcessCommercialAction(unittest.TestCase):
             role=models.CollaboratorRole.MANAGEMENT
         )
 
-    def test_list_customers(self):
-        menu_selection = 1
-        self.controller.process_commercial_action(menu_selection)
-        self.controller.customer_controller.list_customers.assert_called_once()
+    def test_customer_not_found(self):
+        error = ValueError(errors.ERR_CUSTOMER_NOT_FOUND)
+        self.controller.customer_controller.get_customer.side_effect = error
+        self.controller.create_event_for_customer_by_commercial()
+        self.controller.deal_controller.get_deal.assert_not_called()
+        self.controller.event_controller.create_event.assert_not_called()
+        self.controller.view.display_error.assert_called_with(error)
+
+    def test_deal_not_found(self):
+        error = ValueError(errors.ERR_DEAL_NOT_FOUND)
+        self.controller.customer_controller.get_customer.return_value = models.Customer(
+            first_name="test",
+            last_name="test",
+            email="test@epic.io",
+            phone_number="+33601010101",
+            corporation="test",
+            contact=self.controller.collaborator
+        )
+        self.controller.deal_controller.get_deal.side_effect = error
+        self.controller.create_event_for_customer_by_commercial()
+        self.controller.event_controller.create_event.assert_not_called()
+        self.controller.view.display_error.assert_called_with(error)
+
+    def test_normal_behavior(self):
+        customer = models.Customer(
+            first_name="test",
+            last_name="test",
+            email="test@epic.io",
+            phone_number="+33601010101",
+            corporation="test",
+            contact=self.controller.collaborator
+        )
+        self.controller.customer_controller.get_customer.return_value = customer
+        self.controller.deal_controller.get_deal.return_value = models.Deal(
+            bill=1000,
+            remaining_on_bill=1000,
+            has_been_signed=False,
+            contact=self.controller.collaborator,
+            customer=customer
+        )
+        self.controller.create_event_for_customer_by_commercial()
+        self.controller.event_controller.create_event.assert_called_once()
         self.controller.view.display_error.assert_not_called()
 
-    def test_list_deals(self):
-        menu_selection = 2
-        self.controller.process_commercial_action(menu_selection)
-        self.controller.deal_controller.list_deals.assert_called_once()
+
+class TestUpdateCustomerDealByCommercial(unittest.TestCase):
+
+    def setUp(self):
+        self.controller = new_mock_main_controller()
+        self.controller.collaborator = models.Collaborator(
+            first_name="test",
+            last_name="test",
+            password="test",
+            email="test@epic.io",
+            role=models.CollaboratorRole.MANAGEMENT
+        )
+
+    def test_error_getting_customer(self):
+        error = ValueError(errors.ERR_CUSTOMER_NOT_FOUND)
+        self.controller.customer_controller.get_customer.side_effect = error
+        self.controller.update_customer_deal_by_commercial()
+        self.controller.deal_controller.update_deal.assert_not_called()
+        self.controller.view.display_error.assert_called_with(error)
+
+    def test_normal_behavior(self):
+        customer = models.Customer(
+            first_name="test",
+            last_name="test",
+            email="test@epic.io",
+            phone_number="+33601010101",
+            corporation="test",
+            contact=self.controller.collaborator
+        )
+
+        self.controller.customer_controller.get_customer.return_value = customer
+        self.controller.update_customer_deal_by_commercial()
+        self.controller.deal_controller.update_deal.assert_called_once()
         self.controller.view.display_error.assert_not_called()
-
-    def test_list_events(self):
-        menu_selection = 3
-        self.controller.process_commercial_action(menu_selection)
-        self.controller.event_controller.list_events.assert_called_once()
-        self.controller.view.display_error.assert_not_called()
-
-    def test_create_customer(self):
-        menu_selection = 4
-        self.controller.process_commercial_action(menu_selection)
-        self.controller.customer_controller.create_customer.assert_called_once()
-        self.controller.view.display_error.assert_not_called()
-
-    def test_update_customer(self):
-        menu_selection = 5
-        self.controller.process_commercial_action(menu_selection)
-        self.controller.customer_controller.update_customer.assert_called_once()
-        self.controller.view.display_error.assert_not_called()
-
-    def test_update_deal_for_customer(self):
-        menu_selection = 6
-        with patch.object(
-            self.controller,
-            "update_customer_deal_by_commercial"
-        ) as mock_update_customer_deal_by_commercial:
-            self.controller.process_commercial_action(menu_selection)
-            mock_update_customer_deal_by_commercial.assert_called_once()
-            self.controller.view.display_error.assert_not_called()
-
-    def test_create_event_for_customer(self):
-        menu_selection = 7
-        with patch.object(
-            self.controller,
-            "create_event_for_customer_by_commercial"
-        ) as mock_create_event:
-            self.controller.process_commercial_action(menu_selection)
-            mock_create_event.assert_called_once()
-            self.controller.view.display_error.assert_not_called()
