@@ -3,7 +3,7 @@ from unittest.mock import patch, MagicMock
 import models
 from tests.conftest import new_mock_collaborator_controller
 import errors
-
+import validators
 
 class CollaboratorControllerLogin(TestCase):
     def setUp(self):
@@ -91,6 +91,26 @@ class CollaboratorControllerManageCollaborators(TestCase):
         self.controller.view.input_collaborator_management.return_value = 4
         self.controller.manage_collaborators()
         self.controller.view.display_error.assert_called_once()
+
+    def test_back_action(self):
+        self.controller.view.input_collaborator_management.return_value = 0
+        with patch.object(
+                self.controller,
+                'create_collaborator'
+        ) as mock_create:
+            with patch.object(
+                    self.controller,
+                    'update_collaborator'
+            ) as mock_update:
+                with patch.object(
+                        self.controller,
+                        'delete_collaborator'
+                ) as mock_delete:
+                    self.controller.manage_collaborators()
+                    mock_create.assert_not_called()
+                    mock_update.assert_not_called()
+                    mock_delete.assert_not_called()
+                    self.controller.view.display_error.assert_not_called()
 
     def test_manage_collaborators_create(self):
         self.controller.view.input_collaborator_management.return_value = 1
@@ -248,3 +268,50 @@ class TestCollaboratorControllerCRUD(TestCase):
                 display_delete_collaborator_validation.
                 assert_called_once()
             )
+
+
+class TestSetNewCollaboratorEmail(TestCase):
+
+    def setUp(self):
+        self.controller = new_mock_collaborator_controller()
+
+    def test_set_new_collaborator_email_with_error_then_success(self):
+        error = ValueError(errors.ERR_NOT_VALID_EMAIl)
+        with patch.object(
+                self.controller.view,
+                'input_email',
+                side_effect=['invalid_email', 'valid_email@domain.com']
+        ):
+            with patch.object(
+                    self.controller,
+                    'is_email_in_database',
+                    side_effect=[None]
+            ):
+                with patch.object(
+                        validators,
+                        'validate_email',
+                        side_effect=[error, None]
+                ):
+                    result = self.controller.set_new_collaborator_email()
+                    self.controller.view.display_error.assert_called_once_with(
+                        error
+                    )
+                    self.assertEqual(result, 'valid_email@domain.com')
+
+    def test_set_new_collaborator_password_with_error_then_success(self):
+        error = ValueError(errors.ERR_NOT_VALID_PASSWORD)
+        with patch.object(
+                self.controller.view,
+                'input_password',
+                side_effect=['weak', 'StrongPassword123']
+        ):
+            with patch.object(
+                    validators,
+                    'validate_password',
+                    side_effect=[error, None]
+            ):
+                result = self.controller.set_new_collaborator_password()
+                self.controller.view.display_error.assert_called_once_with(
+                        error
+                )
+                self.assertEqual(result, 'StrongPassword123')
