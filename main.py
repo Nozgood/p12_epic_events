@@ -5,16 +5,31 @@ import os
 from sqlalchemy.orm import sessionmaker
 from controllers.main_controller import MainController
 import themes
+import sentry_sdk
 
 load_dotenv()
+
+sentry_sdk.init(
+    dsn="https://c33c514f82b958d1e9076fe4b1e3fc8c@o4507271122255872"
+        ".ingest.de.sentry.io/4507271125139536",
+    # Set traces_sample_rate to 1.0 to capture 100%
+    # of transactions for performance monitoring.
+    traces_sample_rate=1.0,
+    # Set profiles_sample_rate to 1.0 to profile 100%
+    # of sampled transactions.
+    # We recommend adjusting this value in production.
+    profiles_sample_rate=1.0,
+)
 
 db_port = os.getenv("DB_PORT")
 db_user = os.getenv("DB_USER")
 db_password = os.getenv("DB_PASSWORD")
 db_name = os.getenv("DB_NAME")
-db_url = (f"postgresql+psycopg2://{db_user}:"
-          f"{db_password}@localhost:{db_port}/{db_name}")
-print(db_url)
+db_url = (
+    f"postgresql+psycopg2://{db_user}:"
+    f"{db_password}@localhost:{db_port}/{db_name}"
+)
+
 
 def connect_to_db(url):
     engine = None
@@ -49,18 +64,6 @@ if new_engine is None:
 Session = sessionmaker(bind=new_engine)
 session = Session()
 
-
-# admin_user = models.Collaborator(
-#     email="nowfeel@epic.io",
-#     password="test",
-#     role=models.CollaboratorRole.ADMIN,
-#     first_name="Nowfeel",
-#     last_name="Safi"
-# )
-#
-# session.add(admin_user)
-# session.commit()
-# exit()
 
 main_controller = MainController(
     session=session,
