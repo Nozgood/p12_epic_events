@@ -23,3 +23,4 @@ ERR_NOT_VALID_DATE = (
 )
 ERR_NOT_VALID_PERIOD = "start_date must be before end_date"
 ERR_NOT_SUPPORT_COLLABORATOR = "This collaborator is not a support"
+ERR_NO_CUSTOMER_TO_LIST = "We do not have customer to display"

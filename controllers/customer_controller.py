@@ -67,6 +67,8 @@ class CustomerController:
 
     def list_customers(self):
         customers = self.session.query(models.Customer).all()
+        if len(customers) == 0:
+            return self.view.display_error(errors.ERR_NO_CUSTOMER_TO_LIST)
         for customer in customers:
             self.view.display_customer_information(customer)
 
