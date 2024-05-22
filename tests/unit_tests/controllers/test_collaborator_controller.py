@@ -5,6 +5,7 @@ from tests.conftest import new_mock_collaborator_controller
 import errors
 import validators
 
+
 class CollaboratorControllerLogin(TestCase):
     def setUp(self):
         self.controller = new_mock_collaborator_controller()
@@ -156,7 +157,13 @@ class TestCollaboratorControllerCRUD(TestCase):
         self.controller.create_collaborator()
         self.controller.session.add.assert_called_once()
         self.controller.session.commit.assert_called_once()
-        self.controller.view.display_new_collaborator_validation.assert_called_once()
+        (
+            self.
+            controller.
+            view.
+            display_new_collaborator_validation.
+            assert_called_once()
+        )
         self.controller.view.display_error.assert_not_called()
 
     def test_get_collaborator_not_good_email(self):
@@ -204,7 +211,13 @@ class TestCollaboratorControllerCRUD(TestCase):
         ) as mock_get_collaborator:
             mock_get_collaborator.side_effect = ValueError
             self.controller.update_collaborator()
-            self.controller.view.display_collaborator_information.assert_not_called()
+            (
+                self.
+                controller.
+                view.
+                display_collaborator_information.
+                assert_not_called()
+            )
 
     def test_update_collaborator_normal_behavior(self):
         collaborator_not_updated = models.Collaborator(
@@ -234,7 +247,13 @@ class TestCollaboratorControllerCRUD(TestCase):
                 display_collaborator_information.
                 assert_called_once()
             )
-            self.controller.view.display_update_collaborator_validation.assert_called_once()
+            (
+                self.
+                controller.
+                view.
+                display_update_collaborator_validation.
+                assert_called_once()
+            )
 
     def test_delete_collaborator_error(self):
         with patch.object(

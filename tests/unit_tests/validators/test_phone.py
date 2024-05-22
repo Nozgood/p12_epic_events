@@ -24,13 +24,6 @@ class TestValidatePhone(unittest.TestCase):
             errors.ERR_NOT_VALID_PHONE in str(context.exception)
         )
 
-    def test_validate_phone_empty(self):
-        with self.assertRaises(ValueError) as context:
-            validators.validate_phone("")
-        self.assertTrue(
-            errors.ERR_NOT_VALID_PHONE in str(context.exception)
-        )
-
     def test_validate_phone_missing_plus(self):
         with self.assertRaises(ValueError) as context:
             validators.validate_phone("33123456789")

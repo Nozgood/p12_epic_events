@@ -12,7 +12,7 @@ class MainControllerRun(TestCase):
         self.controller = new_mock_main_controller()
 
     def test_run_not_valid_input(self):
-        self.controller.view.display_main_menu.side_effect = [99,0]
+        self.controller.view.display_main_menu.side_effect = [99, 0]
         self.controller.run()
         self.controller.view.display_error.assert_called_once()
 
@@ -73,18 +73,39 @@ class MainControllerCollaboratorMenu(TestCase):
             )
 
     def test_get_collaborator_main_menu_exit(self):
-        self.controller.collaborator_controller.view.display_collaborator_menu.return_value = 0
+        (
+            self.
+            controller.
+            collaborator_controller.
+            view.
+            display_collaborator_menu.
+            return_value
+        ) = 0
         with (
             patch.object(self.controller, "process_commercial_action")
             as mock_process_commercial_action
         ):
             self.controller.get_collaborator_main_menu()
             mock_process_commercial_action.assert_not_called()
-            self.controller.collaborator_controller.view.display_collaborator_menu.assert_called_once()
+            (
+                self.
+                controller.
+                collaborator_controller.
+                view.
+                display_collaborator_menu.
+                assert_called_once()
+            )
 
     def test_get_collaborator_main_menu_management(self):
         self.controller.collaborator.role = models.CollaboratorRole.MANAGEMENT
-        self.controller.collaborator_controller.view.display_collaborator_menu.side_effect = [1, 0]
+        (
+            self.
+            controller.
+            collaborator_controller.
+            view.
+            display_collaborator_menu.
+            side_effect
+        ) = [1, 0]
         with (
             patch.object(self.controller, "process_management_action")
             as mock_process_management_action
@@ -103,7 +124,14 @@ class MainControllerCollaboratorMenu(TestCase):
 
     def test_get_collaborator_main_menu_commercial(self):
         self.controller.collaborator.role = models.CollaboratorRole.COMMERCIAL
-        self.controller.collaborator_controller.view.display_collaborator_menu.side_effect = [1, 0]
+        (
+            self.
+            controller.
+            collaborator_controller.
+            view.
+            display_collaborator_menu.
+            side_effect
+        ) = [1, 0]
         with (
             patch.object(self.controller, "process_commercial_action")
             as mock_process_commercial_action
@@ -111,13 +139,27 @@ class MainControllerCollaboratorMenu(TestCase):
             self.controller.get_collaborator_main_menu()
             mock_process_commercial_action.assert_called_once()
             self.assertEqual(
-                self.controller.collaborator_controller.view.display_collaborator_menu.call_count,
+                (
+                    self.
+                    controller.
+                    collaborator_controller.
+                    view.
+                    display_collaborator_menu.
+                    call_count
+                ),
                 2
             )
 
     def test_get_collaborator_main_menu_support(self):
         self.controller.collaborator.role = models.CollaboratorRole.SUPPORT
-        self.controller.collaborator_controller.view.display_collaborator_menu.side_effect = [1, 0]
+        (
+            self.
+            controller.
+            collaborator_controller.
+            view.
+            display_collaborator_menu.
+            side_effect
+        ) = [1, 0]
         with (
             patch.object(self.controller, "process_support_action")
             as mock_process_support_action
@@ -319,7 +361,13 @@ class TestManageDealForCustomer(unittest.TestCase):
         self.controller.view.display_error.assert_called_once()
 
     def test_normal_behavior(self):
-        self.controller.customer_controller.get_customer.return_value = models.Customer(
+        (
+            self.
+            controller.
+            customer_controller.
+            get_customer.
+            return_value
+        ) = models.Customer(
                 first_name="test",
                 last_name="test",
                 email="test@test.io",
@@ -351,7 +399,13 @@ class TestSetSupportOnEvent(unittest.TestCase):
         self.controller.view.display_error.assert_called_once()
 
     def test_collaborator_not_support(self):
-        self.controller.collaborator_controller.get_collaborator.return_value = models.Collaborator(
+        (
+            self.
+            controller.
+            collaborator_controller.
+            get_collaborator.
+            return_value
+        ) = models.Collaborator(
                 first_name="test",
                 last_name="test",
                 password="test",
@@ -362,7 +416,11 @@ class TestSetSupportOnEvent(unittest.TestCase):
         self.controller.view.display_error.assert_called_once()
 
     def test_normal_behavior(self):
-        self.controller.collaborator_controller.get_collaborator.return_value = models.Collaborator(
+        (
+            self.
+            controller.
+            collaborator_controller.
+            get_collaborator.return_value) = models.Collaborator(
                 first_name="test",
                 last_name="test",
                 password="test",
@@ -395,7 +453,13 @@ class TestCreateEventForCustomerByCommercial(unittest.TestCase):
 
     def test_deal_not_found(self):
         error = ValueError(errors.ERR_DEAL_NOT_FOUND)
-        self.controller.customer_controller.get_customer.return_value = models.Customer(
+        (
+            self.
+            controller.
+            customer_controller.
+            get_customer.
+            return_value
+        ) = models.Customer(
             first_name="test",
             last_name="test",
             email="test@epic.io",

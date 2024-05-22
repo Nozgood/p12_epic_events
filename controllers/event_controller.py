@@ -79,7 +79,7 @@ class EventController:
         if event_filters_input == 1:
             filters.append(models.Event.contact == self.collaborator)
         if event_filters_input == 2:
-            filters.append(models.Event.contact_id == None)
+            filters.append(models.Event.contact_id is None)
         events = self.session.query(models.Event).filter(and_(*filters)).all()
         for event in events:
             self.view.display_event(event)

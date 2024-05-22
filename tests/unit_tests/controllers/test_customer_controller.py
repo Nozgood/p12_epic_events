@@ -4,6 +4,8 @@ from unittest.mock import patch
 import models
 import errors
 import validators
+
+
 class TestCreateCustomer(TestCase):
 
     def setUp(self):
@@ -18,14 +20,14 @@ class TestCreateCustomer(TestCase):
 
     def test_create_customer_error_session_commit(self):
         with patch.object(
-            self.controller,
-            "set_new_customer_email",
-            side_effect="test@test.io"
+                self.controller,
+                "set_new_customer_email",
+                side_effect="test@test.io"
         ):
             with patch.object(
-                self.controller,
-                "set_customer_phone",
-                side_effect="+33601010101"
+                    self.controller,
+                    "set_customer_phone",
+                    side_effect="+33601010101"
             ):
                 self.controller.view.input_customer_information.return_value = (
                     {
@@ -49,14 +51,14 @@ class TestCreateCustomer(TestCase):
 
     def test_create_customer_normal_behavior(self):
         with patch.object(
-            self.controller,
-            "set_new_customer_email",
-            side_effect="test@test.io"
+                self.controller,
+                "set_new_customer_email",
+                side_effect="test@test.io"
         ):
             with patch.object(
-                self.controller,
-                "set_customer_phone",
-                side_effect="+33601010101"
+                    self.controller,
+                    "set_customer_phone",
+                    side_effect="+33601010101"
             ):
                 self.controller.view.input_customer_information.return_value = (
                     {
@@ -93,9 +95,9 @@ class TestUpdateCustomer(TestCase):
     def test_update_customer_customer_not_found(self):
         error = ValueError(errors.ERR_CUSTOMER_NOT_FOUND)
         with patch.object(
-            self.controller,
-            "get_customer",
-            side_effect=error
+                self.controller,
+                "get_customer",
+                side_effect=error
         ):
             self.controller.update_customer()
             (
@@ -109,21 +111,21 @@ class TestUpdateCustomer(TestCase):
 
     def test_normal_behavior(self):
         with patch.object(
-            self.controller,
-            "get_customer",
-            return_value=models.Customer(
-                first_name="first_name",
-                last_name="last_name",
-                email="email@email.io",
-                phone_number="+33601010101",
-                corporation="corporation",
-                contact=self.controller.collaborator
-            )
+                self.controller,
+                "get_customer",
+                return_value=models.Customer(
+                    first_name="first_name",
+                    last_name="last_name",
+                    email="email@email.io",
+                    phone_number="+33601010101",
+                    corporation="corporation",
+                    contact=self.controller.collaborator
+                )
         ):
             with patch.object(
-                self.controller,
-                "set_customer_phone",
-                side_effect="+33601010102"
+                    self.controller,
+                    "set_customer_phone",
+                    side_effect="+33601010102"
             ):
                 self.controller.update_customer()
                 self.controller.session.commit.assert_called_once()
@@ -180,19 +182,19 @@ class TestGetCustomer(TestCase):
             return_value.
             first
         ).return_value = models.Customer(
-                first_name="first_name",
-                last_name="last_name",
-                email="john@example.com",
-                phone_number="+33601010101",
-                corporation="corporation",
-                contact=models.Collaborator(
-                    first_name="ok",
-                    last_name="ok",
-                    password="ok",
-                    email="test@ok.io",
-                    role=models.CollaboratorRole.COMMERCIAL
-                )
+            first_name="first_name",
+            last_name="last_name",
+            email="john@example.com",
+            phone_number="+33601010101",
+            corporation="corporation",
+            contact=models.Collaborator(
+                first_name="ok",
+                last_name="ok",
+                password="ok",
+                email="test@ok.io",
+                role=models.CollaboratorRole.COMMERCIAL
             )
+        )
 
         customer = self.controller.get_customer(mock_collaborator)
         self.assertEqual(customer.email, 'john@example.com')
@@ -300,9 +302,9 @@ class TestSetNewCustomerEmail(TestCase):
     def test_set_new_customer_email_with_retry(self):
         error = ValueError(errors.ERR_NOT_VALID_EMAIl)
         with patch.object(
-            self.controller.view,
-            "input_email",
-            side_effect=["test", "test@gmail.io"]
+                self.controller.view,
+                "input_email",
+                side_effect=["test", "test@gmail.io"]
         ):
             with patch.object(
                     validators,
@@ -310,8 +312,8 @@ class TestSetNewCustomerEmail(TestCase):
             ) as mock_validate_email:
                 with patch.object(
                         self.controller,
-                    "is_email_in_database",
-                    return_value=True
+                        "is_email_in_database",
+                        return_value=True
                 ):
                     mock_validate_email.side_effect = [error, None]
                     email = self.controller.set_new_customer_email()

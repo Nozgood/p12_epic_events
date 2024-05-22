@@ -60,8 +60,8 @@ class Collaborator(Base):
 
     def __str__(self):
         return (
-            f"Email: {self.email} " 
-            f"Role: {self.role} "  
+            f"Email: {self.email} "
+            f"Role: {self.role} "
             f"First Name: {self.first_name} "
             f"Last Name: {self.last_name} "
         )

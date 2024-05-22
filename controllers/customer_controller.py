@@ -101,11 +101,11 @@ class CustomerController:
 
     def is_email_in_database(self, email):
         if (
-                self.
-                        session.
-                        query(models.Collaborator).
-                        filter_by(email=email).
-                        first()
-                is not None
+            self.
+            session.
+            query(models.Collaborator).
+            filter_by(email=email).
+            first()
+            is not None
         ):
             raise ValueError(errors.ERR_EMAIL_ALREADY_EXISTS)

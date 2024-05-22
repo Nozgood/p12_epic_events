@@ -1,7 +1,6 @@
 import models
 import views
 import errors
-from rich.panel import Panel
 
 
 class DealView(views.BaseView):
@@ -48,9 +47,6 @@ class DealView(views.BaseView):
                 continue
         return new_remaining_on_bill
 
-
-
-
     def input_deal_signed(self):
         self.console.print(
             "Deal already signed ? (-0- if NO / -1- if YES)",
@@ -78,8 +74,12 @@ class DealView(views.BaseView):
 
     def display_deal_informations(self, deal: models.Deal):
         return self.console.print(
-            f"[input]Customer[/]: {deal.customer.first_name} {deal.customer.last_name} \n"
-            f"[input]Contact[/]: {deal.contact.first_name} {deal.contact.last_name} \n"
+            f"[input]Customer[/]: "
+            f"{deal.customer.first_name} "
+            f"{deal.customer.last_name} \n"
+            f"[input]Contact[/]: "
+            f"{deal.contact.first_name} "
+            f"{deal.contact.last_name} \n"
             f"[input]Has Been signed[/]: {deal.has_been_signed} \n"
             f"[input]Remaining on Bill[/]: {deal.remaining_on_bill} \n"
             f"[input]Created at[/]: {deal.created_at} \n"
