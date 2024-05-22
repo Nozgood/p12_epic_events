@@ -90,7 +90,7 @@ class DealController:
         filters_input = self.view.input_list_deals_filters()
         filters = []
         if filters_input == 1:
-            filters.append(models.Deal.has_been_signed is False)
+            filters.append(models.Deal.has_been_signed == False)  # noqa: E712
         if filters_input == 2:
             filters.append(models.Deal.remaining_on_bill > 0)
 
