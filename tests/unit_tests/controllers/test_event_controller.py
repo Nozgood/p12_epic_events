@@ -175,7 +175,9 @@ class TestUpdateEvent(TestCase):
                 self.controller,
                 "set_new_event_period"
             ) as mock_set_new_event_period:
-                mock_set_new_event_period.return_value = "01-01-2024", "01-03-2024"
+                mock_set_new_event_period.return_value = (
+                    "01-01-2024", "01-03-2024"
+                )
                 self.controller.view.input_event_location.return_value = "aix"
                 self.controller.view.input_event_attendees.return_value = 2000
                 self.controller.view.input_event_notes.return_value = ""
@@ -342,12 +344,12 @@ class TestSetNewEventPeriod(TestCase):
     def test_set_new_event_period_with_initial_failure_then_success(self):
         error = ValueError(errors.ERR_NOT_VALID_PERIOD)
         start_date = datetime(2023, 1, 10)
-        end_date_initial = datetime(2023, 1,5)
-        end_date = datetime(2023, 1,15)
+        end_date_initial = datetime(2023, 1, 5)
+        end_date = datetime(2023, 1, 15)
         with patch.object(
                 self.controller,
                 'set_new_event_date',
-                side_effect=[start_date, end_date_initial, start_date,end_date]
+                side_effect=[start_date, end_date_initial, start_date, end_date]
         ) as mock_set_date:
             with patch.object(
                     validators,
