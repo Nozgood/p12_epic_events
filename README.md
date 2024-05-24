@@ -11,8 +11,8 @@ source env/bin/activate
 
 ## Set up the database
 
-WARN : We use MySQL for this project
-We work in local, so please before setting up the database for this project, be sure to have correctly installed MySQL
+WARN : We use Postgres for this project
+We work in local, so please before setting up the database for this project, be sure to have correctly installed Postgres
 on your computer or using Docker.
 
 An env file is necessary to connect to the database so let's create this env file at the root of the project:
