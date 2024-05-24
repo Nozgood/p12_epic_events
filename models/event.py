@@ -15,7 +15,8 @@ class Event(Base):
             attendees,
             notes,
             customer,
-            deal
+            deal,
+            contact=None
     ):
         self.id = uuid.uuid4()
         self.name = name
@@ -27,6 +28,7 @@ class Event(Base):
 
         self.customer = customer
         self.deal = deal
+        self.contact = contact
 
     __tablename__ = 'events'
     id = Column(UUID, primary_key=True, index=True)

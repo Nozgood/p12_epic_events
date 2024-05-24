@@ -24,3 +24,7 @@ ERR_NOT_VALID_DATE = (
 ERR_NOT_VALID_PERIOD = "start_date must be before end_date"
 ERR_NOT_SUPPORT_COLLABORATOR = "This collaborator is not a support"
 ERR_NO_CUSTOMER_TO_LIST = "We do not have customer to display"
+ERR_UPDATE_EVENT_WITH_TWO_SUPPORT = (
+    "you cannot update an event with both "
+    "the support already assigned and a new support to assign"
+)

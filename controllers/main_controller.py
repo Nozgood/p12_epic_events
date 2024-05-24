@@ -122,7 +122,8 @@ class MainController:
                     errors.ERR_NOT_SUPPORT_COLLABORATOR
                 )
             return self.event_controller.update_event(
-                support_collaborator
+                support_collaborator=support_collaborator,
+                assigned_support=None
             )
         except ValueError as err:
             return self.view.display_error(err)
