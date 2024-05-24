@@ -1,6 +1,9 @@
 ERR_COLLABORATOR_NOT_FOUND = (
     "Collaborator not found"
 )
+ERR_COLLABORATOR_NO_ROLE = (
+    "This collaborator has no role, he cannot interact with the application"
+)
 ERR_CUSTOMER_NOT_FOUND = "Customer not found"
 ERR_DEAL_NOT_FOUND = "Deal not found"
 ERR_EVENT_NOT_FOUND = "Event not found"
@@ -20,3 +23,8 @@ ERR_NOT_VALID_DATE = (
 )
 ERR_NOT_VALID_PERIOD = "start_date must be before end_date"
 ERR_NOT_SUPPORT_COLLABORATOR = "This collaborator is not a support"
+ERR_NO_CUSTOMER_TO_LIST = "We do not have customer to display"
+ERR_UPDATE_EVENT_WITH_TWO_SUPPORT = (
+    "you cannot update an event with both "
+    "the support already assigned and a new support to assign"
+)

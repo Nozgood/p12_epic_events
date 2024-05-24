@@ -6,12 +6,19 @@ def new_mock_main_controller():
     mock_session = MagicMock()
     mock_console = MagicMock()
     mock_collaborator_controller = MagicMock()
+    mock_customer_controller = MagicMock()
+    mock_deal_controller = MagicMock()
+    mock_event_controller = MagicMock()
 
     mock_main_controller = controllers.MainController(
         session=mock_session,
         console=mock_console
     )
     mock_main_controller.collaborator_controller = mock_collaborator_controller
+    mock_main_controller.customer_controller = mock_customer_controller
+    mock_main_controller.deal_controller = mock_deal_controller
+    mock_main_controller.event_controller = mock_event_controller
+
     mock_main_controller.view = MagicMock()
     return mock_main_controller
 

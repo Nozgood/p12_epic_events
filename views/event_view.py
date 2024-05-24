@@ -20,7 +20,6 @@ class EventView(views.BaseView):
 
         if event.customer is not None:
             self.console.print(f"[input]Customer[/]: {event.customer.email} \n")
-    
         self.console.print("--------------- \n")
 
     def display_new_event_panel(self):
@@ -102,7 +101,6 @@ class EventView(views.BaseView):
                 self.display_error(errors.ERR_NOT_DIGIT_VALUE)
                 continue
         return list_event_filter
-
 
     def display_new_event_validation(self):
         return self.console.print("New event created", style="success")

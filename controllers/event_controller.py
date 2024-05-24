@@ -35,6 +35,18 @@ class EventController:
             return self.view.display_error(err)
 
     def update_event(self, support_collaborator=None, assigned_support=None):
+        """
+        update an existing event based on the new provided information
+
+        :param support_collaborator: a support to assign to the event as contact
+        :param assigned_support: the support that is already assigned to the
+        event as contact to filter by this support
+        :return: a validation message print in the console
+        """
+        if support_collaborator is not None and assigned_support is not None:
+            return self.view.display_error(
+                errors.ERR_UPDATE_EVENT_WITH_TWO_SUPPORT
+            )
         try:
             event_to_update = self.get_event(assigned_support)
             self.view.display_event(event_to_update)
@@ -79,8 +91,14 @@ class EventController:
         if event_filters_input == 1:
             filters.append(models.Event.contact == self.collaborator)
         if event_filters_input == 2:
-            filters.append(models.Event.contact_id == None)
-        events = self.session.query(models.Event).filter(and_(*filters)).all()
+            filters.append(models.Event.contact_id is None)
+        events = (
+            self.
+            session.
+            query(models.Event).
+            filter(and_(True, *filters)).
+            all()
+        )
         for event in events:
             self.view.display_event(event)
 

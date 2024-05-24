@@ -4,6 +4,7 @@ import views
 from datetime import datetime
 from sqlalchemy import and_
 
+
 class DealController:
     def __init__(self, session, view: views.DealView, collaborator=None):
         self.session = session
@@ -12,11 +13,15 @@ class DealController:
 
     def manage_deals(self, customer: models.Customer):
         menu_selection = self.view.input_deal_management()
-        if menu_selection == 1:
-            return self.create_deal(customer)
-        if menu_selection == 2:
-            return self.update_deal(customer)
-        return
+        match menu_selection:
+            case 0:
+                return
+            case 1:
+                return self.create_deal(customer)
+            case 2:
+                return self.update_deal(customer)
+            case _:
+                return self.view.display_error(errors.ERR_MENU_INPUT)
 
     def create_deal(self, customer: models.Customer):
         input_new_deal = self.view.input_new_deal()
@@ -27,9 +32,13 @@ class DealController:
             remaining_on_bill=input_new_deal["bill"],
             has_been_signed=input_new_deal["has_been_signed"]
         )
-        self.session.add(deal)
-        self.session.commit()
-        return self.view.display_new_deal_validation()
+        try:
+            self.session.add(deal)
+            self.session.commit()
+            return self.view.display_new_deal_validation()
+        except Exception as err:
+            self.session.rollback()
+            return self.view.display_error(err)
 
     def update_deal(self, customer: models.Customer):
         try:
@@ -57,10 +66,12 @@ class DealController:
                     )
                 )
             deal_to_manage.updated_at = datetime.now()
-
             self.session.commit()
             return self.view.display_update_deal_validation()
         except ValueError as err:
+            return self.view.display_error(err)
+        except Exception as err:
+            self.session.rollback()
             return self.view.display_error(err)
 
     def get_deal(self, customer: models.Customer) -> models.Deal:
@@ -79,7 +90,7 @@ class DealController:
         filters_input = self.view.input_list_deals_filters()
         filters = []
         if filters_input == 1:
-            filters.append(models.Deal.has_been_signed == False)
+            filters.append(models.Deal.has_been_signed == False)  # noqa: E712
         if filters_input == 2:
             filters.append(models.Deal.remaining_on_bill > 0)
 
