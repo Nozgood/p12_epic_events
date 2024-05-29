@@ -26,6 +26,15 @@ then you will need to set few variables:
 - "DB_PASSWORD"
 - "DB_NAME"
 
+## Run
+
+To run the project, in the terminal, at the root of the project, once you correctly set up and activate the virtual environment :
+```shell
+python main.py 
+```
+
+Then, just let the terminal speaks with you :D 
+
 ### Migrations
 
 To manage migrations we use alembic, if you correctly installed it should be already available in your env
